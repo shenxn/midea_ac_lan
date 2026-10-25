@@ -10,7 +10,7 @@ UART packets consist of a ten-byte header, a body and one checksum byte. Byte 0
 is AA, byte 1 is total length minus one, byte 2 is the appliance type, and byte 9
 is the message type. The sum of bytes 1 through the checksum must be zero modulo 256. AC requests use header byte 8 = 02; ED uses 00.
 
-The AC body is a JZ envelope: `AA length 00 address FF command payload CRC sum`.
+The AC body is a JZ envelope: `AA/BB length 00 address FF command payload CRC sum`.
 Its length includes both checksums. CRC-8 uses the reflected polynomial 8C,
 initial value zero, over the envelope before the CRC. The final byte makes the
 sum of the whole envelope zero modulo 256. General/run queries use address FF;
@@ -70,3 +70,16 @@ JZ and UART envelopes. Changing mode must not enable either fan or power bit.
 The adapter rejects modes outside 1/4/7/8 and requires a prior running-status
 confirmation of `special_machine_type=1` before a mode change. State updates
 always come from received device frames.
+
+### CWS-F08 coupled settings
+
+Time uses command `02 09 00 hour minute`. Large-leak protection uses
+`09 09 enabled threshold_in_10_litres 00`; micro-leak reminder uses
+`0A 09 enabled minutes 00`. Off sends both enabled and threshold as zero,
+matching the model-specific app. Accept only the exact paired keys so incomplete
+or mixed multi-setting requests cannot silently reset a related value.
+
+New status records: 0904 is today's water usage (uint16 LE); 090B is predicted
+regeneration days (byte); 0913 carries days since the last and penultimate
+regenerations at offsets 2 and 3; 0918 carries total stages, current stage and
+stage-name code at offsets 0, 1 and 2. No stage-name labels are guessed.

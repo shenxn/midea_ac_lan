@@ -69,6 +69,17 @@ ED_FIELDS = {
     0x901: (("velocity", 0, 1),),
     0x902: (("soft_available_big", 0, 4),),
     0x903: (("water_consumption_big", 0, 4),),
+    0x904: (("water_consumption_today", 0, 2),),
+    0x90B: (("pre_regeneration_days", 0, 1),),
+    0x913: (
+        ("days_since_last_regeneration", 2, 1),
+        ("days_since_last_two_regeneration", 3, 1),
+    ),
+    0x918: (
+        ("regeneration_stages", 0, 1),
+        ("regeneration_current_stages", 1, 1),
+        ("regeneration_current_stages_name", 2, 1),
+    ),
     0x905: (("water_consumption_average", 0, 2),),
     0x906: (("left_salt", 0, 1),),
     0x907: (("salt_alarm_threshold", 0, 1),),
@@ -245,6 +256,10 @@ class ModelCodec:
         return frame(self.device_type, 3 if kind == "query" else 2, body).hex()
 
     def _ed_control(self, control: dict[str, Any]) -> bytes:
+        if self.subtype == 845:
+            compound = self._soft_compound_control(control)
+            if compound is not None:
+                return b"\x15\x01\x01" + compound
         if len(control) != 1:
             raise ValueError("Exactly one ED setting is required")
         name, value = next(iter(control.items()))
@@ -280,6 +295,36 @@ class ModelCodec:
         else:
             raise ValueError("Unsupported ED command")
         return b"\x15\x01\x01" + tag.to_bytes(2, "little") + payload
+
+    @staticmethod
+    def _soft_compound_control(control: dict[str, Any]) -> bytes | None:
+        """Encode one atomic setting, never split coupled values into commands."""
+        if set(control) == {"timing_regeneration_hour", "timing_regeneration_min"}:
+            hour, minute = (
+                control["timing_regeneration_hour"],
+                control["timing_regeneration_min"],
+            )
+            if (
+                type(hour) is not int
+                or type(minute) is not int
+                or not (0 <= hour <= 23 and 0 <= minute <= 59)
+            ):
+                raise ValueError("Invalid regeneration time")
+            return bytes((2, 9, 0, hour, minute))
+        for name, tag, values in (
+            ("leak_water_protection", 9, range(20, 96, 5)),
+            ("micro_leak_protection", 10, range(10, 91, 5)),
+        ):
+            if set(control) == {name, name + "_value"}:
+                enabled, value = control[name], control[name + "_value"]
+                if enabled not in {"on", "off"} or type(value) is not int:
+                    raise ValueError("Invalid protection setting")
+                if (enabled == "off" and value != 0) or (
+                    enabled == "on" and value not in values
+                ):
+                    raise ValueError("Invalid protection range")
+                return bytes((tag, 9, int(enabled == "on"), value, 0))
+        return None
 
     def _ac_message(
         self,

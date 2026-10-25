@@ -153,6 +153,14 @@ class MideaTime(MideaEntity, TimeEntity):
             If a completion time includes seconds rather than whole minutes.
 
         """
+        if self._config.get("combined_attribute"):
+            if value.second or value.microsecond or value.tzinfo is not None:
+                raise ValueError("Time must use local whole minutes")
+            self._device.set_attribute(
+                self._config["combined_attribute"],
+                value.isoformat(timespec="minutes"),
+            )
+            return
         if self._config.get("completion_attribute"):
             if value.second or value.microsecond:
                 msg = "Completion time must use whole minutes"

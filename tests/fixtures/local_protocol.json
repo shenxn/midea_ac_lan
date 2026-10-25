@@ -53,66 +53,6 @@
         "ready": true
       },
       "attribute": "water_hardness",
-      "value": 1,
-      "hex": "aa12ed000000000000021501010009000100de"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
-      "value": 4,
-      "hex": "aa12ed000000000000021501010009000400db"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
-      "value": 7,
-      "hex": "aa12ed000000000000021501010009000700d8"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
-      "value": 8,
-      "hex": "aa12ed000000000000021501010009000800d7"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
-      "value": 10,
-      "hex": "aa12ed000000000000021501010009000a00d5"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
-      "value": 16,
-      "hex": "aa12ed000000000000021501010009001000cf"
-    },
-    {
-      "model": "6360000F",
-      "subtype": 845,
-      "status": {
-        "ready": true
-      },
-      "attribute": "water_hardness",
       "value": 30,
       "hex": "aa12ed000000000000021501010009001e00c1"
     },

@@ -1,0 +1,378 @@
+{
+  "time_digest": "f388ae69fa2487035413d238259d9f33e8a0065ac58314f50c0ec80275e82daa",
+  "encode": [
+    {
+      "control": {
+        "timing_regeneration_hour": 0,
+        "timing_regeneration_min": 0
+      },
+      "hex": "aa12ed000000000000021501010209000000dd"
+    },
+    {
+      "control": {
+        "timing_regeneration_hour": 2,
+        "timing_regeneration_min": 30
+      },
+      "hex": "aa12ed00000000000002150101020900021ebd"
+    },
+    {
+      "control": {
+        "timing_regeneration_hour": 23,
+        "timing_regeneration_min": 59
+      },
+      "hex": "aa12ed00000000000002150101020900173b8b"
+    },
+    {
+      "control": {
+        "leak_water_protection": "off",
+        "leak_water_protection_value": 0
+      },
+      "hex": "aa12ed000000000000021501010909000000d6"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 20
+      },
+      "hex": "aa12ed000000000000021501010909011400c1"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 25
+      },
+      "hex": "aa12ed000000000000021501010909011900bc"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 30
+      },
+      "hex": "aa12ed000000000000021501010909011e00b7"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 35
+      },
+      "hex": "aa12ed000000000000021501010909012300b2"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 40
+      },
+      "hex": "aa12ed000000000000021501010909012800ad"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 45
+      },
+      "hex": "aa12ed000000000000021501010909012d00a8"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 50
+      },
+      "hex": "aa12ed000000000000021501010909013200a3"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 55
+      },
+      "hex": "aa12ed0000000000000215010109090137009e"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 60
+      },
+      "hex": "aa12ed000000000000021501010909013c0099"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 65
+      },
+      "hex": "aa12ed00000000000002150101090901410094"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 70
+      },
+      "hex": "aa12ed0000000000000215010109090146008f"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 75
+      },
+      "hex": "aa12ed000000000000021501010909014b008a"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 80
+      },
+      "hex": "aa12ed00000000000002150101090901500085"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 85
+      },
+      "hex": "aa12ed00000000000002150101090901550080"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 90
+      },
+      "hex": "aa12ed000000000000021501010909015a007b"
+    },
+    {
+      "control": {
+        "leak_water_protection": "on",
+        "leak_water_protection_value": 95
+      },
+      "hex": "aa12ed000000000000021501010909015f0076"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "off",
+        "micro_leak_protection_value": 0
+      },
+      "hex": "aa12ed000000000000021501010a09000000d5"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 10
+      },
+      "hex": "aa12ed000000000000021501010a09010a00ca"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 15
+      },
+      "hex": "aa12ed000000000000021501010a09010f00c5"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 20
+      },
+      "hex": "aa12ed000000000000021501010a09011400c0"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 25
+      },
+      "hex": "aa12ed000000000000021501010a09011900bb"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 30
+      },
+      "hex": "aa12ed000000000000021501010a09011e00b6"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 35
+      },
+      "hex": "aa12ed000000000000021501010a09012300b1"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 40
+      },
+      "hex": "aa12ed000000000000021501010a09012800ac"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 45
+      },
+      "hex": "aa12ed000000000000021501010a09012d00a7"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 50
+      },
+      "hex": "aa12ed000000000000021501010a09013200a2"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 55
+      },
+      "hex": "aa12ed000000000000021501010a090137009d"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 60
+      },
+      "hex": "aa12ed000000000000021501010a09013c0098"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 65
+      },
+      "hex": "aa12ed000000000000021501010a0901410093"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 70
+      },
+      "hex": "aa12ed000000000000021501010a090146008e"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 75
+      },
+      "hex": "aa12ed000000000000021501010a09014b0089"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 80
+      },
+      "hex": "aa12ed000000000000021501010a0901500084"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 85
+      },
+      "hex": "aa12ed000000000000021501010a090155007f"
+    },
+    {
+      "control": {
+        "micro_leak_protection": "on",
+        "micro_leak_protection_value": 90
+      },
+      "hex": "aa12ed000000000000021501010a09015a007a"
+    },
+    {
+      "control": {
+        "flushing_days": 0
+      },
+      "hex": "aa12ed000000000000021501010109000000de"
+    },
+    {
+      "control": {
+        "flushing_days": 15
+      },
+      "hex": "aa12ed000000000000021501010109000f00cf"
+    },
+    {
+      "control": {
+        "flushing_days": 16
+      },
+      "hex": "aa12ed000000000000021501010109001000ce"
+    },
+    {
+      "control": {
+        "flushing_days": 30
+      },
+      "hex": "aa12ed000000000000021501010109001e00c0"
+    }
+  ],
+  "decode": [
+    {
+      "hex": "aa11ed00000000000003ff010904290000c9",
+      "expected": {
+        "water_consumption_today": 0
+      }
+    },
+    {
+      "hex": "aa11ed00000000000003ff010904290102c6",
+      "expected": {
+        "water_consumption_today": 513
+      }
+    },
+    {
+      "hex": "aa11ed00000000000003ff01090429ffffcb",
+      "expected": {
+        "water_consumption_today": 65535
+      }
+    },
+    {
+      "hex": "aa10ed00000000000003ff01090b1900d3",
+      "expected": {
+        "pre_regeneration_days": 0
+      }
+    },
+    {
+      "hex": "aa10ed00000000000003ff01090b1901d2",
+      "expected": {
+        "pre_regeneration_days": 1
+      }
+    },
+    {
+      "hex": "aa10ed00000000000003ff01090b19ffd4",
+      "expected": {
+        "pre_regeneration_days": 255
+      }
+    },
+    {
+      "hex": "aa13ed00000000000003ff010913490000000098",
+      "expected": {
+        "days_since_last_regeneration": 0,
+        "days_since_last_two_regeneration": 0
+      }
+    },
+    {
+      "hex": "aa13ed00000000000003ff01091349010203048e",
+      "expected": {
+        "days_since_last_regeneration": 3,
+        "days_since_last_two_regeneration": 4
+      }
+    },
+    {
+      "hex": "aa13ed00000000000003ff01091349ffffffff9c",
+      "expected": {
+        "days_since_last_regeneration": 255,
+        "days_since_last_two_regeneration": 255
+      }
+    },
+    {
+      "hex": "aa12ed00000000000003ff01091839000000a4",
+      "expected": {
+        "regeneration_current_stages_name": 0,
+        "regeneration_current_stages": 0,
+        "regeneration_stages": 0
+      }
+    },
+    {
+      "hex": "aa12ed00000000000003ff010918390102039e",
+      "expected": {
+        "regeneration_current_stages_name": 3,
+        "regeneration_current_stages": 2,
+        "regeneration_stages": 1
+      }
+    },
+    {
+      "hex": "aa12ed00000000000003ff01091839ffffffa7",
+      "expected": {
+        "regeneration_current_stages_name": 255,
+        "regeneration_current_stages": 255,
+        "regeneration_stages": 255
+      }
+    }
+  ]
+}

@@ -150,7 +150,7 @@ def test_soft_units_and_ranges() -> None:
     for attr, value in [
         ("water_hardness", 0),
         ("water_hardness", 1000),
-        ("flushing_days", 16),
+        ("flushing_days", 31),
     ]:
         with pytest.raises(ValueError):
             d.set_attribute(attr, value)
@@ -247,6 +247,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
         SWITCH = "switch"
         NUMBER = "number"
         SELECT = "select"
+        TIME = "time"
 
     fake = types.ModuleType("homeassistant.const")
     fake.Platform = Platform  # type: ignore[attr-defined]

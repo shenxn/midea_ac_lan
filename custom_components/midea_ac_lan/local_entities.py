@@ -9,6 +9,13 @@ def register_local_entities(devices: dict[int, Any]) -> None:
     """Register exact-model metadata without mutating shared exclusion lists."""
     soft = devices[237]["entities"]
     names = {
+        "water_consumption_today": ("今日用水量", "L"),
+        "pre_regeneration_days": ("预再生天数", "d"),
+        "days_since_last_regeneration": ("距上次再生天数", "d"),
+        "days_since_last_two_regeneration": ("距上上次再生天数", "d"),
+        "regeneration_stages": ("再生总阶段数", None),
+        "regeneration_current_stages": ("再生当前阶段", None),
+        "regeneration_current_stages_name": ("再生阶段代码", None),
         "left_salt": ("剩余盐量", "%"),
         "soft_available_big": ("可用软水量", "L"),
         "water_consumption_big": ("累计用水量", "L"),
@@ -66,15 +73,37 @@ def register_local_entities(devices: dict[int, Any]) -> None:
             "subtypes": [845],
             "required_attribute": "f08_" + key,
         }
-    for key, limit in [("water_hardness", 999), ("flushing_days", 15)]:
+    for key, limit in [("water_hardness", 999), ("flushing_days", 30)]:
         soft["f08_" + key].update(
             {
                 "type": Platform.NUMBER,
-                "min": 1 if key == "water_hardness" else 0,
+                "min": 30 if key == "water_hardness" else 0,
                 "max": limit,
                 "step": 1,
             },
         )
+    soft["f08_regeneration_time"] = {
+        "type": Platform.TIME,
+        "name": "再生时刻",
+        "models": ["6360000F"],
+        "subtypes": [845],
+        "required_attribute": "f08_timing_regeneration_hour",
+        "hour_attr": "f08_timing_regeneration_hour",
+        "min_attr": "f08_timing_regeneration_min",
+        "combined_attribute": "f08_regeneration_time",
+    }
+    for key, name, unit, values in (
+        ("leak_protection_setting", "大量漏水保护设置", "L", range(200, 951, 50)),
+        ("micro_leak_setting", "微漏提醒设置", "min", range(10, 91, 5)),
+    ):
+        soft["f08_" + key] = {
+            "type": Platform.SELECT,
+            "name": name,
+            "models": ["6360000F"],
+            "subtypes": [845],
+            "required_attribute": "f08_" + key,
+            "options": {0: "关闭", **{v: f"{v} {unit}" for v in values}},
+        }
     ac = devices[172]["entities"]
     for key, name, kind in [
         ("ventilation_power", "新风总开关", Platform.SWITCH),

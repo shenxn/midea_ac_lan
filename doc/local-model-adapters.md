@@ -5,11 +5,11 @@ This fork adds native Python codecs for three exact models while retaining
 All other models continue through the upstream selector. The adapters do not
 request cloud services, load vendor Lua files or require `lupa`.
 
-| Appliance              | Type / model / subtype | Added capabilities                                                                                                                                              |
-| ---------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CWS-F08 softener       | ED / 6360000F / 845    | Salt, available soft water, usage, flow, regeneration status and alarms; softening, chlorine sterilization, hardness 1–999 ppm, regeneration interval 0–15 days |
-| CAX250GC1M ventilation | AC / 24297131 / 1      | Independent intake/exhaust, sterilization, temperature, filter used/remaining; heat exchange 1, strong 7, holiday 8, auto 4                                     |
-| CWGR-A1 dispenser      | ED / 6320088A / 1046   | Three temperature and volume presets, display timeout, presence wake, current quantity preset; existing power/child lock and telemetry                          |
+| Appliance              | Type / model / subtype | Added capabilities                                                                                                                                               |
+| ---------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CWS-F08 softener       | ED / 6360000F / 845    | Salt, available soft water, usage, flow, regeneration status and alarms; softening, chlorine sterilization, hardness 30–999 ppm, regeneration interval 0–30 days |
+| CAX250GC1M ventilation | AC / 24297131 / 1      | Independent intake/exhaust, sterilization, temperature, filter used/remaining; heat exchange 1, strong 7, holiday 8, auto 4                                      |
+| CWGR-A1 dispenser      | ED / 6320088A / 1046   | Three temperature and volume presets, display timeout, presence wake, current quantity preset; existing power/child lock and telemetry                           |
 
 The ventilation mode setter additionally requires the appliance to report
 `special_machine_type=1`. Dedicated C003 controls do not send AC thermostat commands.
@@ -112,3 +112,44 @@ settings and ventilation mode/sterilization/exhaust changes with readback and
 restoration. That is historical evidence for the protocol, not a hardware test
 of the new Python implementation. Offline equivalence does not establish physical
 water-volume accuracy or prove behavior on other firmware/model combinations.
+
+## CWS-F08 protocol expansion
+
+The exact `6360000F` app configuration exposes regeneration intervals 0–30 days.
+The exact model also specifies a hardness minimum of 30 ppm (not the generic
+1 ppm minimum); the adapter now uses 30–999 ppm. Existing values are not rewritten.
+The native adapter now also supports these optional controls:
+
+- Regeneration time: local HH:MM, encoded as **one** 0902 command containing both
+  fields. Separate hour/minute writes could overwrite the other field using stale
+  reported state, so the time entity uses a combined setter.
+- Large-leak protection: off or 200–950 L in 50 L steps. The wire value is in
+  10 L units; flag and threshold are sent together in one 0909 command.
+- Micro-leak reminder: off or 10–90 minutes in five-minute steps, one 090A command.
+
+Existing read-only protection entities and time sensors keep their identities.
+The new controls are opt-in through the integration options; they are not enabled
+by installing the code. Their state updates only from appliance responses.
+
+Additional optional telemetry covers today's water use, predicted regeneration
+interval, days since the last two regenerations, and regeneration stage counts/code.
+A field appears in options only after the appliance reports it. Protocol coverage
+does not mean this particular firmware reports every field.
+
+The manufacturer's model-specific app bundle and private codec were used only as
+local development references. Tests contain synthetic wire vectors, including a
+vendor-generated digest of all 1,440 clock settings, every protection choice and
+12 additional telemetry vectors. No Lua runtime is required by the integration.
+These changes have offline verification only and have not been deployed or tested
+by changing the installed softener's settings.
+
+Remaining boundaries:
+
+- Manual regeneration has a vendor command, but is not exposed in this batch;
+  starting a real regeneration is a separate appliance-action verification.
+- The app's softening appointment page uses cloud task management via
+  `/cfhrs/ed/v2/api`; it is not the daily on-device regeneration time.
+- `holiday_mode` is reported state. This exact model's function list has no
+  holiday toggle, so generic `vacation` controls are not substituted.
+- Manual salt quantity entry is hidden by `hiddenSaleNumerSet` for this model.
+  Low-salt thresholds remain read-only; no matching verified setter was found.

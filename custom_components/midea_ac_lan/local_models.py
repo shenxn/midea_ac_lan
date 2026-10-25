@@ -11,6 +11,7 @@ All transport, authentication and other models retain the upstream implementatio
 import inspect
 import threading
 from collections.abc import Callable
+from datetime import time
 from typing import Any
 
 from midealan.device import MideaDevice
@@ -26,6 +27,13 @@ SUPPORTED_MODELS = {
     (172, "24297131", 1),
 }
 SOFT_KEYS = [
+    "water_consumption_today",
+    "pre_regeneration_days",
+    "days_since_last_regeneration",
+    "days_since_last_two_regeneration",
+    "regeneration_stages",
+    "regeneration_current_stages",
+    "regeneration_current_stages_name",
     "velocity",
     "soft_available_big",
     "water_consumption_big",
@@ -212,21 +220,66 @@ class Softener845(VendorMixin, MideaEDDevice):  # type: ignore[misc]
             aliases["f08_leak_water_protection_value"] = (
                 parsed["leak_water_protection_value"] * 10
             )
+        for source, target, scale in (
+            ("leak_water_protection", "leak_protection_setting", 10),
+            ("micro_leak_protection", "micro_leak_setting", 1),
+        ):
+            if source in data or source + "_value" in data:
+                state = self._vendor_status
+                enabled = state.get(source)
+                threshold = state.get(source + "_value")
+                if enabled == "off":
+                    aliases["f08_" + target] = 0
+                elif enabled == "on" and isinstance(threshold, int):
+                    aliases["f08_" + target] = threshold * scale
         return {**parsed, **aliases}
 
     def set_attribute(self, attr: str, value: Any) -> None:
         """Validate a supported setting before sending a local command."""
         attr = str(attr).removeprefix("f08_")
-        if attr in SOFT_SWITCHES and isinstance(value, bool):
+        if attr == "regeneration_time":
+            if not isinstance(value, str):
+                raise ValueError("Time must be HH:MM")
+            selected = time.fromisoformat(value)
+            if selected.second or selected.microsecond or selected.tzinfo is not None:
+                raise ValueError("Time must be local whole minutes")
+            self._send_control(
+                {
+                    "timing_regeneration_hour": selected.hour,
+                    "timing_regeneration_min": selected.minute,
+                },
+            )
+        elif attr in {"leak_protection_setting", "micro_leak_setting"}:
+            values = (
+                range(200, 951, 50)
+                if attr == "leak_protection_setting"
+                else range(10, 91, 5)
+            )
+            if type(value) is not int or (value != 0 and value not in values):
+                raise ValueError("Invalid protection setting")
+            name = (
+                "leak_water_protection"
+                if attr == "leak_protection_setting"
+                else "micro_leak_protection"
+            )
+            self._send_control(
+                {
+                    name: "on" if value else "off",
+                    name + "_value": value // 10
+                    if attr == "leak_protection_setting"
+                    else value,
+                },
+            )
+        elif attr in SOFT_SWITCHES and isinstance(value, bool):
             self._send_control({attr: "on" if value else "off"})
         elif (
             attr in {"water_hardness", "flushing_days"}
             and isinstance(value, (int, float))
             and not isinstance(value, bool)
             and int(value) == value
-            and (1 if attr == "water_hardness" else 0)
+            and (30 if attr == "water_hardness" else 0)
             <= value
-            <= (999 if attr == "water_hardness" else 15)
+            <= (999 if attr == "water_hardness" else 30)
         ):
             self._send_control({attr: int(value)})
         else:
