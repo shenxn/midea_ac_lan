@@ -236,3 +236,8 @@ Want to expose a new Midea appliance type in this integration? The end-to-end re
 - [为 midea_ac_lan 集成新增一款设备（中文）](doc/adding-a-new-device.zh-Hans.md)
 
 The companion guide for the protocol library side lives in the `midea-lan` repo: [Adding a New Device Type](https://github.com/wuwentao/midea-lan/blob/main/docs/adding-a-new-device.md).
+
+## Personal fork local adapters
+
+See [exact-model local adapters](doc/local-model-adapters.md) for CWS-F08,
+CAX250GC1M and CWGR-A1 support, required private codecs, installation and tests.

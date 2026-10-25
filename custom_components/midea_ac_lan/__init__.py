@@ -34,7 +34,6 @@ from homeassistant.const import (
 from homeassistant.core import Event, HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from midealan.device import DeviceType, MideaDevice, ProtocolVersion
-from midealan.devices import device_selector
 from midealan.discover import discover
 
 from .const import (
@@ -54,7 +53,11 @@ from .const import (
     EXTRA_SWITCH,
     supports_device,
 )
+from .local_entities import register_local_entities
+from .local_models import device_selector
 from .midea_devices import MIDEA_DEVICES
+
+register_local_entities(MIDEA_DEVICES)
 
 _LOGGER = logging.getLogger(__name__)
 

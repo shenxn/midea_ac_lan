@@ -140,3 +140,8 @@ cloud_extend.py
 
 # todo list
 TODO.md
+
+# Privately supplied vendor codecs and local appliance state
+custom_components/midea_ac_lan/model_lua/T_*.lua
+.storage/
+.private-codecs/

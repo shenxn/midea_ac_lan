@@ -230,3 +230,8 @@ cd midea_ac_lan
 - [Adding a New Device to the midea_ac_lan Integration（English）](doc/adding-a-new-device.md)
 
 协议库侧的配套指南位于 `midea-lan` 仓库：[新增设备类型支持指南](https://github.com/wuwentao/midea-lan/blob/main/docs/adding-a-new-device.zh-Hans.md)。
+
+## Personal fork local adapters
+
+See [exact-model local adapters](doc/local-model-adapters.md) for CWS-F08,
+CAX250GC1M and CWGR-A1 support, required private codecs, installation and tests.
