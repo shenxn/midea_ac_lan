@@ -234,4 +234,5 @@ cd midea_ac_lan
 ## Personal fork local adapters
 
 See [exact-model local adapters](doc/local-model-adapters.md) for CWS-F08,
-CAX250GC1M and CWGR-A1 support, required private codecs, installation and tests.
+CAX250GC1M and CWGR-A1 native Python support, installation and tests.
+No Lua runtime or private codec files are required.

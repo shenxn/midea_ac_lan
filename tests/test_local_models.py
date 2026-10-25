@@ -4,32 +4,20 @@
 # ruff: file-ignore[magic-value-comparison, any-type, pytest-raises-too-broad, import-outside-top-level, too-many-arguments, too-many-positional-arguments]
 
 import importlib.util
-import os
 import sys
 from pathlib import Path
 from typing import Any
 from unittest.mock import Mock
 
 import pytest
+from midea_ac_lan import local_models as models
 from midealan.const import ProtocolVersion
 
-# Load the adapter without importing Home Assistant's integration entry point.
-pytestmark = pytest.mark.usefixtures("codec_backend")
-
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location(
-    "local_models",
-    ROOT / "custom_components/midea_ac_lan/local_models.py",
-)
-assert SPEC is not None
-assert SPEC.loader is not None
-models = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(models)
 Softener845 = models.Softener845
 FreshAir24297131 = models.FreshAir24297131
 PipeDispenser1046 = models.PipeDispenser1046
 VendorFrame = models.VendorFrame
-REAL_CODEC = models.Codec
 
 SOFT_STATUS = {"soften": "on", "water_hardness": 180, "flushing_days": 0}
 FRESH_STATUS = {
@@ -55,21 +43,6 @@ PIPE_STATUS = {
 }
 
 
-@pytest.fixture
-def codec_backend(
-    request: pytest.FixtureRequest,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """Public tests use a stub; private packet tests require user-owned Lua."""
-    if request.node.get_closest_marker("vendor_codec"):
-        root = os.environ.get("MIDEA_TEST_CODEC_DIR")
-        if not root:
-            pytest.skip("Set MIDEA_TEST_CODEC_DIR for private vendor packet tests")
-        monkeypatch.setattr(models, "CODEC_DIR", Path(root))
-    else:
-        monkeypatch.setattr(models, "Codec", Mock())
-
-
 def make(cls: Any, model: str, subtype: int) -> Any:
     """Make."""
     return cls(
@@ -86,7 +59,6 @@ def make(cls: Any, model: str, subtype: int) -> Any:
     )
 
 
-@pytest.mark.vendor_codec
 def test_queries() -> None:
     """Queries."""
     for cls, model, subtype in [
@@ -98,7 +70,6 @@ def test_queries() -> None:
         assert not d.build_init_query()
 
 
-@pytest.mark.vendor_codec
 def test_soft_ff_vendor_fixture() -> None:
     """Soft ff vendor fixture."""
     d = make(Softener845, "6360000F", 845)
@@ -116,7 +87,6 @@ def test_soft_ff_vendor_fixture() -> None:
     assert parsed["f08_regeneration"] is False
 
 
-@pytest.mark.vendor_codec
 def test_soft_controls() -> None:
     """Soft controls."""
     d = make(Softener845, "6360000F", 845)
@@ -133,7 +103,6 @@ def test_soft_controls() -> None:
         d.set_attribute("f08_soften", "off")
 
 
-@pytest.mark.vendor_codec
 def test_fresh_control_mask() -> None:
     """Fresh control mask."""
     d = make(FreshAir24297131, "24297131", 1)
@@ -187,7 +156,6 @@ def test_soft_units_and_ranges() -> None:
             d.set_attribute(attr, value)
 
 
-@pytest.mark.vendor_codec
 def test_fresh_dedicated_modes_and_mask() -> None:
     """Fresh dedicated modes and mask."""
     d = make(FreshAir24297131, "24297131", 1)
@@ -218,7 +186,6 @@ def test_fresh_filter_life_and_mode_readback() -> None:
     assert d._map_status({"fresh_filter_time": -1})["fresh_filter_remaining"] is None
 
 
-@pytest.mark.vendor_codec
 def test_pipeline_mapping_and_query() -> None:
     """Pipeline mapping and query."""
     d = make(PipeDispenser1046, "6320088A", 1046)
@@ -236,7 +203,6 @@ def test_pipeline_mapping_and_query() -> None:
     assert p["water_consumption"] == pytest.approx(0.409)
 
 
-@pytest.mark.vendor_codec
 def test_pipeline_single_setting_packets() -> None:
     """Pipeline single setting packets."""
     d = make(PipeDispenser1046, "6320088A", 1046)
@@ -273,7 +239,6 @@ def test_model_exclusions_do_not_mutate_shared_lists(
 ) -> None:
     """Model exclusions do not mutate shared lists."""
     import enum
-    import importlib.util
     import types
 
     class Platform(enum.StrEnum):
@@ -468,33 +433,3 @@ def test_vendor_frame_rejects_corruption() -> None:
         corrupt[index] ^= 1
         with pytest.raises(ValueError):
             VendorFrame(corrupt.hex(), 237, 3)
-
-
-def test_missing_private_codec_has_actionable_error(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-) -> None:
-    """Missing vendor files fail clearly without affecting other models."""
-    monkeypatch.setattr(models, "CODEC_DIR", tmp_path)
-    with pytest.raises(FileNotFoundError, match=r"doc/local-model-adapters\.md"):
-        REAL_CODEC("not-present.lua", 845)
-
-
-def test_private_codec_location_and_runtime(
-    monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
-) -> None:
-    """Load user-owned Lua externally with shipped helpers and no Python bridge."""
-    monkeypatch.setattr(models, "CODEC_DIR", tmp_path)
-    (tmp_path / "synthetic.lua").write_text(
-        'local bit = require "bit"\n'
-        'local json = require "cjson"\n'
-        "function jsonToData(payload) return tostring(bit.band(3, 1)) end\n"
-        'function dataToJson(payload) return json.encode({status={power="on"}}) end\n',
-        encoding="utf-8",
-    )
-    codec = REAL_CODEC("synthetic.lua", 845)
-    assert codec.encode("query", {}) == "1"
-    assert codec.decode(b"\xaa") == {"power": "on"}
-    for name in ("python", "os", "io", "require", "package", "debug"):
-        assert codec.lua.globals()[name] is None

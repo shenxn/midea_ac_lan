@@ -1,31 +1,29 @@
-"""Exact-model local LAN codecs using the appliance vendor's cached Lua.
+"""Exact-model local LAN adapters using native Python wire codecs.
 
 No cloud requests. Exact-model adapters for CWS-F08/845, CAX250GC1M/1
-and CWGR-A1/1046. Vendor codecs are supplied privately by the user.
+and CWGR-A1/1046. No vendor scripts or Lua runtime are required.
 All transport, authentication and other models retain the upstream implementation.
 """
 
-# Wire constants and dynamic upstream/Lua attributes intentionally mirror the protocol.
-# ruff: file-ignore[magic-value-comparison, any-type, undocumented-public-init, docstring-missing-returns, docstring-missing-exception, no-self-use, too-many-boolean-expressions, import-outside-top-level]
+# Wire constants and dynamic upstream attributes intentionally mirror the protocol.
+# ruff: file-ignore[magic-value-comparison, any-type, undocumented-public-init, docstring-missing-returns, docstring-missing-exception, no-self-use, too-many-boolean-expressions]
 
 import inspect
-import json
 import threading
 from collections.abc import Callable
-from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 from midealan.device import MideaDevice
 from midealan.devices import device_selector as upstream_selector
 from midealan.devices.ac import MideaACDevice
 from midealan.devices.ed import MideaEDDevice
 
-CODEC_DIR = Path(__file__).resolve().parents[2] / ".storage/midea_ac_lan/model_lua"
+from .local_protocol import ModelCodec as Codec
 
-FILES = {
-    (237, "6320088A", 1046): "T_0000_ED_6320088A_2025032701.lua",
-    (237, "6360000F", 845): "T_0000_ED_6360000F_2024090502.lua",
-    (172, "24297131", 1): "T_0000_AC_24297131_2024112901.lua",
+SUPPORTED_MODELS = {
+    (237, "6320088A", 1046),
+    (237, "6360000F", 845),
+    (172, "24297131", 1),
 }
 SOFT_KEYS = [
     "velocity",
@@ -118,73 +116,6 @@ class FreshC003Query(VendorFrame):
     """Identify the dedicated C003 ventilation query."""
 
 
-class Codec:
-    """Serialize access to one private model Lua runtime."""
-
-    def __init__(
-        self,
-        filename: str,
-        subtype: int,
-        serial_number: str | None = None,
-    ) -> None:
-        self.lock = threading.RLock()
-        self.info = {"deviceSubType": str(subtype)}
-        if serial_number:
-            self.info["deviceSN"] = serial_number
-        # LuaRuntime is provided by a compiled extension, invisible to pylint.
-        # pylint: disable-next=no-name-in-module
-        from lupa.lua51 import LuaRuntime
-
-        root = Path(__file__).parent / "model_lua"
-        source = CODEC_DIR / filename
-        # Preserve manual installations of the original local patch.
-        if not source.is_file():
-            source = root / filename
-        if not source.is_file():
-            raise FileNotFoundError(
-                f"Exact-model codec {filename} is missing. Place your privately "
-                f"obtained copy in {CODEC_DIR}; see doc/local-model-adapters.md.",
-            )
-        self.lua = LuaRuntime(
-            unpack_returned_tuples=True,
-            register_eval=False,
-            register_builtins=False,
-        )
-        self.lua.execute(
-            "package.path = "
-            + json.dumps(str(root / "?.lua"))
-            + ' .. ";" .. package.path; print=function(...) end',
-        )
-        self.lua.execute("python=nil")
-        self.lua.execute(source.read_text(encoding="utf-8"))
-        # The vendor codec needs no filesystem/process/network access after load.
-        self.lua.execute(
-            "os=nil; io=nil; dofile=nil; loadfile=nil; "
-            "package=nil; require=nil; debug=nil",
-        )
-
-    def encode(
-        self,
-        kind: str,
-        value: dict[str, Any],
-        status: dict[str, Any] | None = None,
-    ) -> str:
-        """Encode a query or control using the last appliance status."""
-        payload = {"deviceinfo": self.info, kind: value}
-        if status is not None:
-            payload["status"] = status
-        with self.lock:
-            return cast("str", self.lua.globals().jsonToData(json.dumps(payload)))
-
-    def decode(self, msg: bytes) -> dict[str, Any]:
-        """Decode appliance bytes into vendor status fields."""
-        with self.lock:
-            result = self.lua.globals().dataToJson(
-                json.dumps({"deviceinfo": self.info, "msg": {"data": msg.hex()}}),
-            )
-            return cast("dict[str, Any]", json.loads(result).get("status", {}))
-
-
 class VendorMixin:
     """Adapt model-specific payloads to the existing encrypted LAN transport."""
 
@@ -196,9 +127,8 @@ class VendorMixin:
 
     def _init_codec(self, dtype: int, kwargs: dict[str, Any]) -> None:
         self._vendor_codec = Codec(
-            FILES[dtype, kwargs["model"], kwargs["subtype"]],
+            dtype,
             kwargs["subtype"],
-            kwargs.get("serial_number"),
         )
         self._vendor_status: dict[str, Any] = {}
         self._vendor_lock = threading.RLock()
@@ -525,7 +455,7 @@ def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:
     bound.apply_defaults()
     values = bound.arguments
     key = (int(values["device_type"]), values["model"], int(values["subtype"]))
-    if key not in FILES:
+    if key not in SUPPORTED_MODELS:
         return upstream_selector(*args, **kwargs)
     values = dict(values)
     values.pop("device_type")
