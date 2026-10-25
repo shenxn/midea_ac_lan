@@ -14,7 +14,7 @@ from midea_ac_lan.local_models import (
     PipeDispenser1046,
     Softener845,
 )
-from midea_ac_lan.local_protocol import ModelCodec, ac_envelope, frame
+from midea_ac_lan.local_protocol import ModelCodec, ac_envelope, crc8, frame
 from midealan.const import ProtocolVersion
 
 VECTORS = json.loads(
@@ -174,3 +174,17 @@ def test_codec_does_not_expose_generic_dangerous_commands(
     """The low-level encoder also rejects commands outside the native subset."""
     with pytest.raises(ValueError):
         ModelCodec(device_type, subtype).encode("control", control)
+
+
+def test_appliance_bb_response_header() -> None:
+    """Live JZ responses use BB with the same length, CRC and checksum rules."""
+    body = bytearray(ac_envelope(0x10, bytes(64)))
+    body[0] = 0xBB
+    body[13:15] = (2150).to_bytes(2, "little")
+    body[-2] = crc8(body[:-2])
+    body[-1] = -sum(body[:-1]) & 0xFF
+    codec = ModelCodec(172, 1)
+    assert codec.decode(frame(172, 3, bytes(body)))["indoor_temperature"] == 21.5
+    body[-2] ^= 1
+    body[-1] = -sum(body[:-1]) & 0xFF
+    assert codec.decode(frame(172, 3, bytes(body))) == {}

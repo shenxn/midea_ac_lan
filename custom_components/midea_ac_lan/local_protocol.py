@@ -163,7 +163,7 @@ def _decode_ac(body: bytes) -> dict[str, Any]:
     """Decode only fields present in general, running or dedicated C003 status."""
     if (
         len(body) < 8
-        or body[0] != 0xAA
+        or body[0] not in {0xAA, 0xBB}
         or body[1] != len(body)
         or sum(body) & 0xFF
         or crc8(body[:-2]) != body[-2]
