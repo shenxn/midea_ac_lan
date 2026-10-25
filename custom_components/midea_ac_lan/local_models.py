@@ -208,6 +208,9 @@ class Softener845(VendorMixin, MideaEDDevice):  # type: ignore[misc]
         super().__init__(**kwargs)
         self._attributes = dict.fromkeys(SOFT_KEYS)
         self._attributes.update({"f08_" + k: None for k in SOFT_KEYS})
+        self._attributes.update(
+            dict.fromkeys(["f08_leak_protection_setting", "f08_micro_leak_setting"]),
+        )
 
     def _map_status(self, data: dict[str, Any]) -> dict[str, Any]:
         parsed = {

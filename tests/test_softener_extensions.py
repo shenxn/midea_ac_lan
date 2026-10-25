@@ -174,3 +174,10 @@ def test_incomplete_or_invalid_coupled_commands(control: dict[str, Any]) -> None
     """The codec rejects incomplete pairs even if called without the adapter."""
     with pytest.raises(ValueError):
         ModelCodec(237, 845).encode("control", control)
+
+
+def test_protection_controls_exist_before_first_poll(device: Any) -> None:
+    """HA platform setup must see derived attributes before status arrives."""
+    for key in ("f08_leak_protection_setting", "f08_micro_leak_setting"):
+        assert key in device.attributes
+        assert device.get_attribute(key) is None
