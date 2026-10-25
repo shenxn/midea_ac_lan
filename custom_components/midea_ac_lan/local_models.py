@@ -541,9 +541,18 @@ class Kitchen22397091(MideaACDevice):
             ),
         )
 
+    def build_init_query(self) -> list[Any]:
+        """Skip generic discovery for this verified BB model."""
+        return []
+
     def build_query(self) -> list[Any]:
-        """Keep upstream polling and add the kitchen status query."""
-        return [*super().build_query(), VendorFrame(kitchen_query().hex(), 172, 3)]
+        """Query BB telemetry before the first thermostat reply."""
+        # A successful C002 reply would suppress upstream's all-queries-failed
+        # fallback. This verified model must query BB from its first cycle.
+        return [
+            *self._subprotocol_queries(),
+            VendorFrame(kitchen_query().hex(), 172, 3),
+        ]
 
     def process_message(self, msg: bytes) -> dict[str, Any]:
         """Keep C002 responses out of the upstream BB thermostat decoder."""

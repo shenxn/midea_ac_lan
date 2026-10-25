@@ -9,6 +9,11 @@ import pytest
 from midea_ac_lan.kitchen_protocol import kitchen_control, kitchen_query, kitchen_status
 from midea_ac_lan.local_models import Kitchen22397091
 from midealan.const import ProtocolVersion
+from midealan.devices.ac.message import (
+    SubProtocolQuery10,
+    SubProtocolQuery11,
+    SubProtocolQuery30,
+)
 
 VECTORS = json.loads((Path(__file__).parent / "fixtures/kitchen.json").read_text())
 
@@ -51,6 +56,12 @@ def test_adapter_requires_live_capability_and_does_not_guess_state() -> None:
         subtype=1,
         customize="",
     )
+    # A new connection must not depend on a fallback suppressed by C002 success.
+    assert device.build_init_query() == []
+    queries = device.build_query()
+    assert isinstance(queries[0], SubProtocolQuery10)
+    assert isinstance(queries[1], SubProtocolQuery11)
+    assert isinstance(queries[2], SubProtocolQuery30)
     device.build_send = Mock()
     with pytest.raises(ValueError, match="not confirmed"):
         device.set_attribute("kitchen_prepare_food", True)
