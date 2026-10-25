@@ -74,6 +74,13 @@ SOFT_KEYS = [
     "flowmeter_error",
     "rtc_error",
 ]
+PIPE_TELEMETRY = [
+    "error",
+    "lack_water",
+    "heat_status",
+    "leaking_protect_status",
+    "effluent_ml",
+]
 PIPE_SETTINGS = [
     "custom_temperature_1",
     "custom_temperature_2",
@@ -439,7 +446,7 @@ class PipeDispenser1046(VendorMixin, MideaEDDevice):  # type: ignore[misc]
     def __init__(self, **kwargs: Any) -> None:
         self._init_codec(237, kwargs)
         super().__init__(**kwargs)
-        for key in PIPE_SETTINGS:
+        for key in [*PIPE_SETTINGS, *PIPE_TELEMETRY]:
             self._attributes["a1_" + key] = None
 
     def _map_status(self, data: dict[str, Any]) -> dict[str, Any]:
@@ -465,6 +472,13 @@ class PipeDispenser1046(VendorMixin, MideaEDDevice):  # type: ignore[misc]
         if "water_consumption" in data:
             # Preserve upstream ED water-consumption scaling for existing history.
             parsed["water_consumption"] = data["water_consumption"] / 1000
+        for key in PIPE_TELEMETRY:
+            if key in data:
+                parsed["a1_" + key] = (
+                    data[key] == "on"
+                    if key in {"lack_water", "heat_status", "leaking_protect_status"}
+                    else data[key]
+                )
         for key in PIPE_SETTINGS:
             if key not in data:
                 continue

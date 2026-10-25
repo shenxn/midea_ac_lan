@@ -2502,7 +2502,9 @@
         "sleep": "off",
         "out_hot_water": "off",
         "power": "off",
-        "standby_status": 0
+        "standby_status": 0,
+        "heat_status": "off",
+        "lack_water": "off"
       }
     },
     {
@@ -2515,7 +2517,9 @@
         "sleep": "on",
         "out_hot_water": "on",
         "power": "on",
-        "standby_status": 1
+        "standby_status": 1,
+        "heat_status": "on",
+        "lack_water": "on"
       }
     },
     {
@@ -2528,7 +2532,9 @@
         "sleep": "on",
         "out_hot_water": "on",
         "power": "on",
-        "standby_status": 0
+        "standby_status": 0,
+        "heat_status": "on",
+        "lack_water": "on"
       }
     },
     {
@@ -2736,7 +2742,9 @@
         "custom_temperature_2": 0,
         "water_kind": 0,
         "power": "off",
-        "standby_status": 0
+        "standby_status": 0,
+        "heat_status": "off",
+        "lack_water": "off"
       }
     },
     {

@@ -1,0 +1,708 @@
+[
+  {
+    "hex": "aa13ed00000000000003ff0107004000000000b6",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff01070040ffffffffba",
+    "expected": {
+      "heat_status": "on",
+      "lack_water": "on"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004001000000b5",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004002000000b4",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004004000000b2",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004008000000ae",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004010000000a6",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700402000000096",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700404000000076",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700408000000036",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000010000b5",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000020000b4",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000040000b2",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000080000ae",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000100000a6",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400020000096",
+    "expected": {
+      "heat_status": "on",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400040000076",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400080000036",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000100b5",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000200b4",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000400b2",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "on"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000800ae",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000001000a6",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000200096",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000400076",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000800036",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000001b5",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000002b4",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000004b2",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000008ae",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff0107004000000010a6",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000002096",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000004076",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa13ed00000000000003ff010700400000008036",
+    "expected": {
+      "heat_status": "off",
+      "lack_water": "off"
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011000e8",
+    "expected": {
+      "error": 0
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff01070110ffe9",
+    "expected": {
+      "error": 255
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011001e7",
+    "expected": {
+      "error": 1
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011002e6",
+    "expected": {
+      "error": 2
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011004e4",
+    "expected": {
+      "error": 4
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011008e0",
+    "expected": {
+      "error": 8
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011010d8",
+    "expected": {
+      "error": 16
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011020c8",
+    "expected": {
+      "error": 32
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff0107011040a8",
+    "expected": {
+      "error": 64
+    }
+  },
+  {
+    "hex": "aa10ed00000000000003ff010701108068",
+    "expected": {
+      "error": 128
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000000069",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50ffffffffff6e",
+    "expected": {
+      "leaking_protect_status": "on"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50010000000068",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50020000000067",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50040000000065",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50080000000061",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50100000000059",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50200000000049",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50400000000029",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c508000000000e9",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000100000068",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000200000067",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000400000065",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000800000061",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50001000000059",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50002000000049",
+    "expected": {
+      "leaking_protect_status": "on"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50004000000029",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c500080000000e9",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000001000068",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000002000067",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000004000065",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000008000061",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000010000059",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000020000049",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000040000029",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c500000800000e9",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000010068",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000020067",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000040065",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000080061",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000100059",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000200049",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000400029",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c500000008000e9",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000000168",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000000267",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000000465",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000000861",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000001059",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000002049",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c50000000004029",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa14ed00000000000003ff01073c500000000080e9",
+    "expected": {
+      "leaking_protect_status": "off"
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000000090",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff01073730ffffff93",
+    "expected": {
+      "effluent_ml": 65535
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300100008f",
+    "expected": {
+      "effluent_ml": 1
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300200008e",
+    "expected": {
+      "effluent_ml": 2
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300400008c",
+    "expected": {
+      "effluent_ml": 4
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373008000088",
+    "expected": {
+      "effluent_ml": 8
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373010000080",
+    "expected": {
+      "effluent_ml": 16
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373020000070",
+    "expected": {
+      "effluent_ml": 32
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373040000050",
+    "expected": {
+      "effluent_ml": 64
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373080000010",
+    "expected": {
+      "effluent_ml": 128
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300001008f",
+    "expected": {
+      "effluent_ml": 256
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300002008e",
+    "expected": {
+      "effluent_ml": 512
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300004008c",
+    "expected": {
+      "effluent_ml": 1024
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000080088",
+    "expected": {
+      "effluent_ml": 2048
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000100080",
+    "expected": {
+      "effluent_ml": 4096
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000200070",
+    "expected": {
+      "effluent_ml": 8192
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000400050",
+    "expected": {
+      "effluent_ml": 16384
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000800010",
+    "expected": {
+      "effluent_ml": 32768
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300000018f",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300000028e",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff010737300000048c",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000000888",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000001080",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000002070",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000004050",
+    "expected": {
+      "effluent_ml": 0
+    }
+  },
+  {
+    "hex": "aa12ed00000000000003ff0107373000008010",
+    "expected": {
+      "effluent_ml": 0
+    }
+  }
+]

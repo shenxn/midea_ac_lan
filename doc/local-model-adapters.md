@@ -167,3 +167,13 @@ The native encoder matches all four on/off vectors from the model's 2024110401
 codec. Synthetic decode vectors cover capability/state combinations and angle
 values; truncation and corruption must not update state. No vendor runtime is
 installed. Unconfirmed generic presets remain hidden by the existing HA options.
+
+### CWGR-A1 additional LAN telemetry
+
+Optional read-only entities expose the reported fault code, water-shortage flag,
+heating flag, leak-protection status and dispensed-volume reading (mL). These are
+only initialized by actual records: absent data remains unknown. The new flag
+positions and volume bytes are limited to subtype 1046; softener decoding is
+unchanged. Independent vendor vectors cover every bit of the relevant records.
+No dispensing, heating or protection configuration commands are added. The
+volume reading is not treated as a lifetime counter or given a reset assumption.

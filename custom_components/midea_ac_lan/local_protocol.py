@@ -126,6 +126,11 @@ ED_FLAGS = {
     ),
     0x914: (("soften", 0, 0), ("water_way", 0, 1)),
 }
+PIPE_FIELDS = {0x037: (("effluent_ml", 0, 2),)}
+PIPE_FLAGS = {
+    0x000: (("heat_status", 1, 5), ("lack_water", 2, 2)),
+    0x03C: (("leaking_protect_status", 1, 5),),
+}
 FRESH_FLAGS = (
     "new_wind_machine",
     "fresh_air_remove_odor",
@@ -134,7 +139,7 @@ FRESH_FLAGS = (
 )
 
 
-def _decode_ed(body: bytes) -> dict[str, Any]:
+def _decode_ed(body: bytes, *, pipe: bool = False) -> dict[str, Any]:
     """Decode FF/01 status records with 12-bit IDs and a four-bit length."""
     if len(body) < 3 or body[:2] != b"\xff\x01":
         return {}
@@ -149,7 +154,10 @@ def _decode_ed(body: bytes) -> dict[str, Any]:
         value = body[offset : offset + size]
         if len(value) != size:
             raise ValueError("Truncated ED record value")
-        for name, start, width in ED_FIELDS.get(identifier, ()):
+        fields = ED_FIELDS.get(identifier, ()) + (
+            PIPE_FIELDS.get(identifier, ()) if pipe else ()
+        )
+        for name, start, width in fields:
             if start + width > size:
                 raise ValueError("Short ED numeric record")
             result[name] = int.from_bytes(
@@ -157,7 +165,10 @@ def _decode_ed(body: bytes) -> dict[str, Any]:
                 "little",
                 signed=name == "input_temperature_Sensing",
             )
-        for name, start, bit in ED_FLAGS.get(identifier, ()):
+        flags = ED_FLAGS.get(identifier, ()) + (
+            PIPE_FLAGS.get(identifier, ()) if pipe else ()
+        )
+        for name, start, bit in flags:
             if start >= size:
                 raise ValueError("Short ED flag record")
             enabled = bool(value[start] & (1 << bit))
@@ -394,7 +405,11 @@ class ModelCodec:
             return {}
         try:
             if self.device_type == 0xED:
-                return _decode_ed(msg[10:-1]) if msg[9] in {3, 4} else {}
+                return (
+                    _decode_ed(msg[10:-1], pipe=self.subtype == 1046)
+                    if msg[9] in {3, 4}
+                    else {}
+                )
             result = _decode_ac(msg[10:-1])
             self._pack_id = self._address = 0
         except ValueError:

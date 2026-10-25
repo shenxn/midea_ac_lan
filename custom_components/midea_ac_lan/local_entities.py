@@ -224,3 +224,19 @@ def register_local_entities(devices: dict[int, Any]) -> None:
             "subtypes": [1],
             "required_attribute": "kitchen_" + key,
         }
+
+    for key, name, platform, unit in [
+        ("error", "故障代码", Platform.SENSOR, None),
+        ("lack_water", "缺水状态", Platform.BINARY_SENSOR, None),
+        ("heat_status", "加热状态", Platform.BINARY_SENSOR, None),
+        ("leaking_protect_status", "漏水保护状态", Platform.BINARY_SENSOR, None),
+        ("effluent_ml", "出水量读数", Platform.SENSOR, "mL"),
+    ]:
+        pipe["a1_" + key] = {
+            "type": platform,
+            "name": name,
+            "unit": unit,
+            "models": ["6320088A"],
+            "subtypes": [1046],
+            "required_attribute": "a1_" + key,
+        }
