@@ -91,6 +91,7 @@ def register_local_entities(devices: dict[int, Any]) -> None:
         "hour_attr": "f08_timing_regeneration_hour",
         "min_attr": "f08_timing_regeneration_min",
         "combined_attribute": "f08_regeneration_time",
+        "state_attribute": "f08_timing_regeneration_hour",
     }
     for key, name, unit, values in (
         ("leak_protection_setting", "大量漏水保护设置", "L", range(200, 951, 50)),

@@ -181,3 +181,17 @@ def test_protection_controls_exist_before_first_poll(device: Any) -> None:
     for key in ("f08_leak_protection_setting", "f08_micro_leak_setting"):
         assert key in device.attributes
         assert device.get_attribute(key) is None
+
+
+def test_time_entity_refreshes_from_reported_clock_fields(device: Any) -> None:
+    """The combined setter key is not a wire field; watch the 090C clock report."""
+    item = MideaTime(device, "f08_regeneration_time")
+    item.hass = Mock()
+    item.schedule_update_if_running = Mock()
+    status = device.process_message(frame(237, 3, bytes.fromhex("ff01090c4900000201")))
+    item.update_state(status)
+    item.schedule_update_if_running.assert_called_once()
+    assert item.native_value == time(2, 1)
+    item.schedule_update_if_running.reset_mock()
+    item.update_state({"f08_left_salt": 36})
+    item.schedule_update_if_running.assert_not_called()
