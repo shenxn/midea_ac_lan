@@ -1,6 +1,6 @@
 # Exact-model local LAN adapters / 精确型号本地适配
 
-This fork adds native Python codecs for three exact models while retaining
+This fork adds native Python codecs for four exact models while retaining
 `midea-lan==2026.10.0` for discovery, authentication, encryption and LAN transport.
 All other models continue through the upstream selector. The adapters do not
 request cloud services, load vendor Lua files or require `lupa`.
@@ -153,3 +153,17 @@ Remaining boundaries:
   holiday toggle, so generic `vacation` controls are not substituted.
 - Manual salt quantity entry is hidden by `hiddenSaleNumerSet` for this model.
   Low-salt thresholds remain read-only; no matching verified setter was found.
+
+## Kitchen AC CAC36QN1E1
+
+The exact AC / 22397091 / subtype 1 adapter retains upstream thermostat controls
+and adds an independent C002 status query. Verified capability bits gate the
+optional **备菜** (food preparation) and **爆炒** (stir-fry) switches. Each command
+sets only that function's enable mask; its state is updated from device responses.
+The optional **备菜爆炒风向值** sensor reports the raw 7-bit value. Its angle scale
+and allowed user choices are not verified, so it is read-only and has no unit.
+
+The native encoder matches all four on/off vectors from the model's 2024110401
+codec. Synthetic decode vectors cover capability/state combinations and angle
+values; truncation and corruption must not update state. No vendor runtime is
+installed. Unconfirmed generic presets remain hidden by the existing HA options.

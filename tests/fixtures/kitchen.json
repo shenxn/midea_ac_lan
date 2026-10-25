@@ -1,0 +1,602 @@
+{
+  "encode": [
+    {
+      "name": "prepare_food",
+      "enabled": false,
+      "hex": "aa64ac00000000000202aa5a0000ffc0000101000000000000000001c00246000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b88dadec"
+    },
+    {
+      "name": "prepare_food",
+      "enabled": true,
+      "hex": "aa64ac00000000000202aa5a0000ffc0000101000000000000000001c00246000000000000404000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000782c0eec"
+    },
+    {
+      "name": "quick_fry",
+      "enabled": false,
+      "hex": "aa64ac00000000000202aa5a0000ffc0000101000000000000000001c002460000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007888b2ec"
+    },
+    {
+      "name": "quick_fry",
+      "enabled": true,
+      "hex": "aa64ac00000000000202aa5a0000ffc0000101000000000000000001c00246000000000000808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f8d268ec"
+    }
+  ],
+  "decode": [
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c00200000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000021dcee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000000000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000006894ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000000000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000001683ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000000000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000433bee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000004000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000001aa3ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000004000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000005369ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000400000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000002d2cee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000400000000000000000000000000000000000000000000000000000ff000000000000000000000000000000000000000000000000000000000000000000000000000078c6ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000008000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000005726ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000008000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000001e5eee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000800000000000000000000000000000000000000000000000000000e4000000000000000000000000000000000000000000000000000000000000000000000000000060b9ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000800000000000000000000000000000000000000000000000000000ff000000000000000000000000000000000000000000000000000000000000000000000000000035c9ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000c000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000006cd1ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000c000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000002517ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000c00000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000005b7eee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000000c00000000000000000000000000000000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000000eb0ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000bffeee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040000000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000f6c6ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040000000000000000000000000000000000000000000000000000000e4000000000000000000000000000000000000000000000000000000000000000000000000000088d1ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040000000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000dd61ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c00200000000000000004040000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000084f9ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040400000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000cdafee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040400000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000b366ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040400000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000e618ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040800000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000c974ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c00200000000000000004080000000000000000000000000000000000000000000000000000081000000000000000000000000000000000000000000000000000000000000000000000000000080bcee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040800000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000fedbee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040800000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000ab13ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040c00000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000f20bee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040c00000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000bb41ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040c00000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000c5d4ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000040c00000000000000000000000000000000000000000000000000000ff000000000000000000000000000000000000000000000000000000000000000000000000000090eeee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000800000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000479ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000800000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000004d2fee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080000000000000000000000000000000000000000000000000000000e4000000000000000000000000000000000000000000000000000000000000000000000000000033e6ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080000000000000000000000000000000000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000006698ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000804000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000003ffeee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c00200000000000000008040000000000000000000000000000000000000000000000000000081000000000000000000000000000000000000000000000000000000000000000000000000000076c6ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080400000000000000000000000000000000000000000000000000000e4000000000000000000000000000000000000000000000000000000000000000000000000000008d1ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080400000000000000000000000000000000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000005d61ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080800000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000728bee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000808000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000003bc1ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080800000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000004554ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080800000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000106eee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080c000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000004974ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080c0000000000000000000000000000000000000000000000000000081000000000000000000000000000000000000000000000000000000000000000000000000000000bcee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080c00000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000007edbee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c002000000000000000080c00000000000000000000000000000000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000002b13ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c00000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000009aa3ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0000000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000d369ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0000000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000ad2cee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0000000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000f8c6ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0400000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000a15cee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0400000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000e814ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0400000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000000000000000009603ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0400000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000c3bbee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": false
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0800000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000ecd1ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0800000000000000000000000000000000000000000000000000000810000000000000000000000000000000000000000000000000000000000000000000000000000a517ee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0800000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000db7eee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0800000000000000000000000000000000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000008eb0ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": false,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0c00000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000d7a6ee",
+      "expected": {
+        "kitchen_food_angle": 0,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0c000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000000000000000000000000000000000009edeee",
+      "expected": {
+        "kitchen_food_angle": 1,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0c00000000000000000000000000000000000000000000000000000e40000000000000000000000000000000000000000000000000000000000000000000000000000e039ee",
+      "expected": {
+        "kitchen_food_angle": 100,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    },
+    {
+      "hex": "aa61ac00000000000203aa570000ffc00001c0020000000000000000c0c00000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000000000000000000000b549ee",
+      "expected": {
+        "kitchen_food_angle": 127,
+        "kitchen_has_prepare_food": true,
+        "kitchen_prepare_food": true,
+        "kitchen_has_quick_fry": true,
+        "kitchen_quick_fry": true
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 """Exact-model local LAN adapters using native Python wire codecs.
 
 No cloud requests. Exact-model adapters for CWS-F08/845, CAX250GC1M/1
-and CWGR-A1/1046. No vendor scripts or Lua runtime are required.
+CWGR-A1/1046 and CAC36QN1E1/1. No vendor scripts or Lua runtime are required.
 All transport, authentication and other models retain the upstream implementation.
 """
 
@@ -19,9 +19,16 @@ from midealan.devices import device_selector as upstream_selector
 from midealan.devices.ac import MideaACDevice
 from midealan.devices.ed import MideaEDDevice
 
+from .kitchen_protocol import (
+    KITCHEN_SWITCHES,
+    kitchen_control,
+    kitchen_query,
+    kitchen_status,
+)
 from .local_protocol import ModelCodec as Codec
 
 SUPPORTED_MODELS = {
+    (172, "22397091", 1),
     (237, "6320088A", 1046),
     (237, "6360000F", 845),
     (172, "24297131", 1),
@@ -505,6 +512,46 @@ class PipeDispenser1046(VendorMixin, MideaEDDevice):  # type: ignore[misc]
         self._send_control(control)
 
 
+class Kitchen22397091(MideaACDevice):
+    """Extend upstream AC controls with exact-model kitchen functions."""
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self._attributes.update(
+            dict.fromkeys(
+                [
+                    "kitchen_prepare_food",
+                    "kitchen_quick_fry",
+                    "kitchen_food_angle",
+                ],
+            ),
+        )
+
+    def build_query(self) -> list[Any]:
+        """Keep upstream polling and add the kitchen status query."""
+        return [*super().build_query(), VendorFrame(kitchen_query().hex(), 172, 3)]
+
+    def process_message(self, msg: bytes) -> dict[str, Any]:
+        """Keep C002 responses out of the upstream BB thermostat decoder."""
+        if len(msg) > 15 and msg[10] in {0xAA, 0xBB} and msg[15] == 0xC0:
+            parsed = kitchen_status(msg)
+            self._attributes.update(parsed)
+            return parsed
+        return super().process_message(msg)
+
+    def set_attribute(self, attr: str, value: Any) -> None:
+        """Send a supported kitchen setting without optimistic state updates."""
+        if attr.startswith("kitchen_"):
+            name = attr.removeprefix("kitchen_")
+            if name not in KITCHEN_SWITCHES or not self._attributes.get(
+                "kitchen_has_" + name,
+            ):
+                raise ValueError("Kitchen function is not confirmed by the device")
+            self.build_send(VendorFrame(kitchen_control(name, value).hex(), 172, 2))  # type: ignore[arg-type]
+            return
+        super().set_attribute(attr, value)
+
+
 def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:
     """Dispatch exact model/subtype pairs and preserve upstream selection otherwise."""
     bound = inspect.signature(upstream_selector).bind(*args, **kwargs)
@@ -519,5 +566,6 @@ def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:
         (237, "6360000F", 845): Softener845,
         (237, "6320088A", 1046): PipeDispenser1046,
         (172, "24297131", 1): FreshAir24297131,
+        (172, "22397091", 1): Kitchen22397091,
     }[key]
     return cls(**values)

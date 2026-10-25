@@ -211,3 +211,16 @@ def register_local_entities(devices: dict[int, Any]) -> None:
                 config["excluded_devices"] = excluded
                 if (model, subtype) not in excluded:
                     excluded.append((model, subtype))
+
+    for key, name, platform in [
+        ("prepare_food", "备菜", Platform.SWITCH),
+        ("quick_fry", "爆炒", Platform.SWITCH),
+        ("food_angle", "备菜爆炒风向值", Platform.SENSOR),
+    ]:
+        devices[172]["entities"]["kitchen_" + key] = {
+            "type": platform,
+            "name": name,
+            "models": ["22397091"],
+            "subtypes": [1],
+            "required_attribute": "kitchen_" + key,
+        }
