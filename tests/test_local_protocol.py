@@ -184,7 +184,9 @@ def test_appliance_bb_response_header() -> None:
     body[-2] = crc8(body[:-2])
     body[-1] = -sum(body[:-1]) & 0xFF
     codec = ModelCodec(172, 1)
-    assert codec.decode(frame(172, 3, bytes(body)))["indoor_temperature"] == 21.5
+    assert codec.decode(frame(172, 3, bytes(body)))[
+        "indoor_temperature"
+    ] == pytest.approx(21.5)
     body[-2] ^= 1
     body[-1] = -sum(body[:-1]) & 0xFF
     assert codec.decode(frame(172, 3, bytes(body))) == {}
