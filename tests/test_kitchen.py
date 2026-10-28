@@ -70,7 +70,10 @@ def test_adapter_requires_live_capability_and_does_not_guess_state() -> None:
         for x in VECTORS["decode"]
         if x["expected"].get("kitchen_prepare_food") is False
     )
-    assert device.process_message(bytes.fromhex(case["hex"])) == case["expected"]
+    parsed = device.process_message(bytes.fromhex(case["hex"]))
+    assert {k: v for k, v in parsed.items() if k.startswith("kitchen_")} == case[
+        "expected"
+    ]
     device.set_attribute("kitchen_prepare_food", True)
     assert device.get_attribute("kitchen_prepare_food") is False
     device.build_send.assert_called_once()

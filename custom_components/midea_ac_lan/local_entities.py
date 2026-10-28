@@ -240,3 +240,29 @@ def register_local_entities(devices: dict[int, Any]) -> None:
             "subtypes": [1046],
             "required_attribute": "a1_" + key,
         }
+
+    for key, name, platform in (
+        ("power", "温控", Platform.CLIMATE),
+        ("ptc", "电辅热", Platform.SWITCH),
+        ("power_save", "节能", Platform.SWITCH),
+        ("go_out", "外出", Platform.SWITCH),
+        ("in_temperature", "进水温度", Platform.SENSOR),
+        ("out_temperature", "出水温度", Platform.SENSOR),
+    ):
+        config = {
+            "type": platform,
+            "name": name,
+            "models": ["22397091"],
+            "subtypes": [1],
+            "device_group": "hydronic",
+            "required_attribute": "hydronic_" + key,
+            "available_attribute": "hydronic_has",
+            "available_value_attribute": "hydronic_" + key,
+        }
+        if platform == Platform.SENSOR:
+            config.update(
+                device_class="temperature",
+                unit="°C",
+                state_class="measurement",
+            )
+        devices[172]["entities"]["hydronic_" + key] = config

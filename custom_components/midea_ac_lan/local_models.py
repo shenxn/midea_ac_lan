@@ -19,6 +19,7 @@ from midealan.devices import device_selector as upstream_selector
 from midealan.devices.ac import MideaACDevice
 from midealan.devices.ed import MideaEDDevice
 
+from .hydronic_protocol import FLAGS, hydronic_control, hydronic_query, hydronic_status
 from .kitchen_protocol import (
     KITCHEN_SWITCHES,
     kitchen_control,
@@ -537,6 +538,10 @@ class Kitchen22397091(MideaACDevice):
                     "kitchen_prepare_food",
                     "kitchen_quick_fry",
                     "kitchen_food_angle",
+                    *["hydronic_" + key for key in FLAGS],
+                    "hydronic_temperature_set",
+                    "hydronic_in_temperature",
+                    "hydronic_out_temperature",
                 ],
             ),
         )
@@ -552,18 +557,32 @@ class Kitchen22397091(MideaACDevice):
         return [
             *self._subprotocol_queries(),
             VendorFrame(kitchen_query().hex(), 172, 3),
+            VendorFrame(hydronic_query().hex(), 172, 3),
         ]
 
     def process_message(self, msg: bytes) -> dict[str, Any]:
         """Keep C002 responses out of the upstream BB thermostat decoder."""
         if len(msg) > 15 and msg[10] in {0xAA, 0xBB} and msg[15] == 0xC0:
-            parsed = kitchen_status(msg)
+            parsed = {**kitchen_status(msg), **hydronic_status(msg)}
             self._attributes.update(parsed)
             return parsed
-        return super().process_message(msg)
+        parsed = hydronic_status(msg)
+        self._attributes.update(parsed)
+        if len(msg) > 15 and msg[15] == 0x12:
+            return parsed
+        return {**super().process_message(msg), **parsed}
 
     def set_attribute(self, attr: str, value: Any) -> None:
         """Send a supported kitchen setting without optimistic state updates."""
+        if attr.startswith("hydronic_"):
+            name = attr.removeprefix("hydronic_")
+            if not self._attributes.get("hydronic_has") or (
+                name == "temperature_set"
+                and not self._attributes.get("hydronic_has_temperature_set")
+            ):
+                raise ValueError("Hydronic function is not confirmed by the device")
+            self.build_send(VendorFrame(hydronic_control(name, value).hex(), 172, 2))  # type: ignore[arg-type]
+            return
         if attr.startswith("kitchen_"):
             name = attr.removeprefix("kitchen_")
             if name not in KITCHEN_SWITCHES or not self._attributes.get(

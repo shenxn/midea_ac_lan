@@ -58,6 +58,7 @@ from midealan.devices.fb import DeviceAttributes as FBAttributes
 from midealan.devices.fb import MideaFBDevice
 
 from .const import DEVICES, DOMAIN, FanSpeed, supports_device
+from .hydronic_climate import MideaHydronicClimate
 from .midea_devices import MIDEA_DEVICES
 from .midea_entity import MideaEntity
 
@@ -81,7 +82,8 @@ async def async_setup_entry(
     device = hass.data[DOMAIN][DEVICES].get(device_id)
     extra_switches = config_entry.options.get(CONF_SWITCHES, [])
     devs: list[
-        MideaACClimate
+        MideaHydronicClimate
+        | MideaACClimate
         | MideaCCClimate
         | MideaCFClimate
         | MideaC3Climate
@@ -98,7 +100,9 @@ async def async_setup_entry(
             and supports_device(device.model, device.subtype, config)
             and (config.get("default") or entity_key in extra_switches)
         ):
-            if device.device_type == DeviceType.AC:
+            if config.get("device_group") == "hydronic":
+                devs.append(MideaHydronicClimate(device, entity_key))
+            elif device.device_type == DeviceType.AC:
                 # add config_entry args to fix indoor_humidity error bug
                 devs.append(MideaACClimate(device, entity_key, config_entry))
             elif device.device_type == DeviceType.CC:

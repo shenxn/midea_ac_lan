@@ -242,6 +242,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     import types
 
     class Platform(enum.StrEnum):
+        CLIMATE = "climate"
         SENSOR = "sensor"
         BINARY_SENSOR = "binary_sensor"
         SWITCH = "switch"

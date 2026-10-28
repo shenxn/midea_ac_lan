@@ -1,0 +1,22 @@
+Kitchen AC hydronic module (AC / 22397091 / subtype 1)
+
+The optional water thermostat, auxiliary heat, energy saving, away switches,
+and inlet/outlet temperature sensors share the existing kitchen AC LAN socket.
+Select hydronic_power and the three hydronic switches in device options, and
+select the two hydronic temperature sensors. A separate child device is created.
+Only select one entry for a shared physical module.
+
+The adapter polls water telemetry (0x12) and uses existing general/C002 queries
+for module presence, water setpoint capability and reported function states.
+Controls use individual C002 masks. Setting 25-60 C in whole degrees selects
+manual water regulation without enabling heating or changing the AC setpoint.
+No cloud account, vendor Lua, optimistic status, or extra socket is introduced.
+Water temperature is never used to infer compressor activity.
+
+Validation: independent exact-model command vectors, corrupt/truncated frames,
+signed temperature decoding, capability guards and live LAN setpoint readback.
+Physical verification kept module heating and auxiliary heat off. Activation of
+heating/auxiliary heat has not been tested as part of the migration.
+
+Existing cloud entities must be migrated explicitly; this component does not
+silently rename or remove entities belonging to another integration.

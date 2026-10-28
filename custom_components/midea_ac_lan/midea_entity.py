@@ -130,6 +130,14 @@ class MideaEntity(Entity):
             "identifiers": {(DOMAIN, str(self._device.device_id))},
             "name": self._device_name,
         }
+        if self._config.get("device_group") == "hydronic":
+            return DeviceInfo(
+                identifiers={(DOMAIN, f"{self._device.device_id}:hydronic")},
+                via_device=(DOMAIN, str(self._device.device_id)),
+                name="地暖水力模块",
+                manufacturer="Midea",
+                model="Hydronic module",
+            )
         if self._device.mac:
             info["connections"] = {
                 (CONNECTION_NETWORK_MAC, format_mac(self._device.mac)),
