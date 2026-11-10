@@ -1,6 +1,7 @@
 """Exact-model BLE addresses, query codecs, and reversible settings."""
 
 from dataclasses import dataclass
+from . import dishwasher
 from .protocol import signed
 
 
@@ -27,10 +28,13 @@ HEATER = Appliance(
     "燃气热水器",
     bytes.fromhex("aa1ee3000000000000030101000000000000000000000000000000000000fa"),
 )
-DEVICES = {device.sn8.decode(): device for device in (HOOD, HEATER)}
+DISH = Appliance("CDG16QA83K", b"7600002B", 0xE1, "洗碗机", dishwasher.QUERY)
+DEVICES = {device.sn8.decode(): device for device in (HOOD, HEATER, DISH)}
 
 
 def parse(device, raw):
+    if device == DISH:
+        return dishwasher.parse_status(raw)
     if (
         len(raw) < 13
         or raw[0] != 170
@@ -66,12 +70,16 @@ def parse(device, raw):
 
 
 def idle(device, state):
+    if device == DISH:
+        return state["status"] == 0 and not state["operator"]
     if device == HOOD:
         return not state["power"] and state["gear"] == 0
     return not state["power"] and not state["burning"]
 
 
 def setting(device, key, value):
+    if device == DISH:
+        return dishwasher.setting_frame(key, value)
     if type(value) is not bool:
         raise ValueError("Invalid switch value")
     if device == HOOD and key == "light":

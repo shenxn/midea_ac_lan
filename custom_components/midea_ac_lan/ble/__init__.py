@@ -9,7 +9,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .client import connect
-from .appliances import DEVICES
+from .appliances import DEVICES, DISH
 
 
 PLATFORMS = ["sensor", "binary_sensor", "switch"]
@@ -56,6 +56,10 @@ class Appliance(DataUpdateCoordinator):
 async def setup_entry(hass: HomeAssistant, entry):
     coordinator = Appliance(hass, entry)
     # A sleeping appliance should still have a device page after HA restarts.
+    if coordinator.profile == DISH:
+        from .migration import adopt_legacy_dishwasher
+
+        adopt_legacy_dishwasher(hass, entry, coordinator.address)
     await coordinator.async_refresh()
     next_wake_attempt = 0.0
     wake_task = None

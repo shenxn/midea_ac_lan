@@ -242,3 +242,5 @@ No Lua runtime or private codec files are required.
 在「添加 Midea AC LAN」中选择「Bluetooth (BLE proxy)」，再选择代理发现的设备。此入口使用 HA Bluetooth 的主动连接能力。查询和写入通过 BLE 会话完成，写入后再次查询设备状态。
 
 已验证的型号为 CXEP930W-C3 AIR（读取电源状态和档位、设置照明）和 JSLQ27-CTE816（读取电源、燃烧反馈、设定温度和出水温度、设置主机提示音）。设置开关仅在设备空闲时可调。设备停止广播或代理不可达时，实体可能暂时显示不可用。
+
+CDG16QA83K 洗碗机也支持此蓝牙入口，提供状态、提示音和童锁。迁移独立版 COLMO Dishwasher BLE 时，先停用原蓝牙配置项，然后在这里选择同一台洗碗机。集成会沿用原实体 ID 和区域。HA 会为 fork 分配新的设备 ID。

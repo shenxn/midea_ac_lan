@@ -1,5 +1,5 @@
 from homeassistant.components.switch import SwitchEntity
-from .appliances import HOOD
+from .appliances import DISH, HOOD
 from .entity import ApplianceEntity
 
 
@@ -18,6 +18,8 @@ class ApplianceSwitch(ApplianceEntity, SwitchEntity):
 async def async_setup_entry(hass, entry, async_add_entities):
     profile = entry.runtime_data.profile
     fields = {"light": "照明"} if profile == HOOD else {"beep": "主机提示音"}
+    if profile == DISH:
+        fields = {"beep": "提示音", "child_lock": "童锁"}
     async_add_entities(
         [ApplianceSwitch(entry.runtime_data, k, v) for k, v in fields.items()]
     )
