@@ -1049,6 +1049,22 @@ class MideaLanOptionsFlowHandler(OptionsFlow):
 
         """
         if self._config_entry.data.get("transport") == "bluetooth":
+            if self._config_entry.data.get("sn8") == "7600002B":
+                if user_input is not None:
+                    return self.async_create_entry(title="", data=user_input)
+                return self.async_show_form(
+                    step_id="init",
+                    data_schema=vol.Schema(
+                        {
+                            vol.Required(
+                                "allow_dishwasher_cycle",
+                                default=self._config_entry.options.get(
+                                    "allow_dishwasher_cycle", False
+                                ),
+                            ): bool,
+                        }
+                    ),
+                )
             return self.async_abort(reason="ble_no_options")
         if self._device_type == CONF_ACCOUNT:
             return self.async_abort(reason="account_option")

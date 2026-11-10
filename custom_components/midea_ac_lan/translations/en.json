@@ -4361,7 +4361,8 @@
           "customize": "Customize",
           "account": "Midea cloud account (for the usage statistics sensors)",
           "password": "Midea cloud account password (for the usage statistics sensors)",
-          "server": "Midea cloud server of the account (for the usage statistics sensors)"
+          "server": "Midea cloud server of the account (for the usage statistics sensors)",
+          "allow_dishwasher_cycle": "Allow program selection to start washing and allow resume"
         },
         "title": "Configure"
       }

@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from bleak_retry_connector import establish_connection, BleakClientWithServiceCache
 from homeassistant.components import bluetooth
 from .protocol import NOTIFY, SERVICE, WRITE, Session
+from .controls import command, matches, status_fields
 from .appliances import idle, parse, setting
 
 
@@ -71,12 +72,36 @@ class Link:
                         if raw[9:10] == b"\x03" and raw[2:3] == bytes(
                             [self.profile.kind]
                         ):
-                            return parse(self.profile, raw)
+                            state = parse(self.profile, raw)
+                            state["controls"] = status_fields(self.profile, raw)
+                            return state
             except TimeoutError:
                 continue
         raise TimeoutError("No fresh appliance status")
 
-    async def set_option(self, key, value):
+    async def set_option(self, key, value, *, allow_cycle=False):
+        if key.startswith("control_"):
+            field = key.removeprefix("control_")
+            state = await self.query()
+            observed = state["controls"]
+            frame = command(
+                self.profile, field, value, observed, allow_cycle=allow_cycle
+            )
+            if field.endswith("_stove_off") and observed.get(field) not in (
+                "off",
+                "working",
+            ):
+                raise ValueError("Burner has not reported state")
+            if matches(field, value, observed):
+                return state
+            await self.send(self.session.request(frame))
+            # One write only. Poll until the appliance confirms the desired state.
+            for delay in (0.45, 0.8, 1.5):
+                await asyncio.sleep(delay)
+                state = await self.query()
+                if matches(field, value, state["controls"]):
+                    return state
+            raise ValueError(f"Appliance did not confirm {field}")
         frame = setting(self.profile, key, value)
         state = await self.query()
         if state[key] == value:

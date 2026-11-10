@@ -12,7 +12,16 @@ from .client import connect
 from .appliances import DEVICES, DISH
 
 
-PLATFORMS = ["sensor", "binary_sensor", "switch"]
+PLATFORMS = [
+    "sensor",
+    "binary_sensor",
+    "switch",
+    "select",
+    "number",
+    "climate",
+    "button",
+    "lock",
+]
 
 
 class Appliance(DataUpdateCoordinator):
@@ -28,6 +37,7 @@ class Appliance(DataUpdateCoordinator):
         self.lock = asyncio.Lock()
         self.profile = DEVICES[entry.data["sn8"]]
         self.address = entry.data["address"]
+        self.allow_cycle = entry.options.get("allow_dishwasher_cycle", False) is True
 
     async def _async_update_data(self):
         async with self.lock:
@@ -47,7 +57,9 @@ class Appliance(DataUpdateCoordinator):
                     asyncio.timeout(60),
                     connect(self.hass, self.profile, self.address) as link,
                 ):
-                    state = await link.set_option(key, value)
+                    state = await link.set_option(
+                        key, value, allow_cycle=self.allow_cycle
+                    )
                 self.async_set_updated_data(state)
             except Exception as err:
                 raise HomeAssistantError(f"Setting {key} unconfirmed: {err}") from err
@@ -90,6 +102,11 @@ async def setup_entry(hass: HomeAssistant, entry):
             bluetooth.BluetoothScanningMode.PASSIVE,
         )
     )
+
+    async def reload_options(hass, changed):
+        await hass.config_entries.async_reload(changed.entry_id)
+
+    entry.async_on_unload(entry.add_update_listener(reload_options))
     entry.runtime_data = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True

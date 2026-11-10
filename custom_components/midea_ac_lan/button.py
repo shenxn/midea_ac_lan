@@ -20,6 +20,11 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up buttons for device."""
+    if config_entry.data.get("transport") == "bluetooth":
+        from .ble.control_entities import add_controls
+
+        add_controls(config_entry, async_add_entities, "button")
+        return
     device_id = config_entry.data.get(CONF_DEVICE_ID)
     device = hass.data[DOMAIN][DEVICES].get(device_id)
     extra_switches = config_entry.options.get(CONF_SWITCHES, [])

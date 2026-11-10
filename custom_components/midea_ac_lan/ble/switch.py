@@ -16,6 +16,9 @@ class ApplianceSwitch(ApplianceEntity, SwitchEntity):
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
+    from .control_entities import add_controls
+
+    add_controls(entry, async_add_entities, "switch")
     profile = entry.runtime_data.profile
     fields = {"light": "照明"} if profile == HOOD else {"beep": "主机提示音"}
     if profile == DISH:
