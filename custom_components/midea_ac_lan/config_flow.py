@@ -95,6 +95,7 @@ from .midea_devices import MIDEA_DEVICES
 _LOGGER = logging.getLogger(__name__)
 
 ADD_WAY = {
+    "bluetooth": "Bluetooth (BLE proxy)",
     "discovery": "Discover automatically",
     "manually": "Configure manually",
     "list": "List all appliances only",
@@ -234,6 +235,8 @@ class MideaLanConfigFlow(ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
             # default is auto discovery mode
             if user_input["action"] == "discovery":
                 return await self.async_step_discovery()
+            if user_input["action"] == "bluetooth":
+                return await self.async_step_bluetooth_device()
             # manual input device detail
             if user_input["action"] == "manually":
                 self.found_device = {}
@@ -250,6 +253,46 @@ class MideaLanConfigFlow(ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
                 {vol.Required("action", default="discovery"): vol.In(ADD_WAY)},
             ),
             errors={"base": error} if error else None,
+        )
+
+    async def async_step_bluetooth_device(self, user_input=None):
+        """Offer only recognized appliance advertisements from connectable scanners."""
+        from homeassistant.components import bluetooth
+        from .ble.appliances import DEVICES
+
+        found = {}
+        for info in bluetooth.async_discovered_service_info(
+            self.hass, connectable=True
+        ):
+            payload = info.manufacturer_data.get(1704, b"")
+            model = DEVICES.get(payload[1:9].decode("ascii", errors="ignore"))
+            if model and payload[9:11] == f"{model.kind:02X}".encode():
+                found[info.address] = model
+        if user_input and user_input.get("address") in found:
+            address = user_input["address"]
+            model = found[address]
+            await self.async_set_unique_id(f"ble_{address}")
+            self._abort_if_unique_id_configured()
+            return self.async_create_entry(
+                title=f"{model.name}（蓝牙）",
+                data={
+                    "transport": "bluetooth",
+                    "address": address,
+                    "sn8": model.sn8.decode(),
+                    CONF_TYPE: model.kind,
+                    CONF_MODEL: model.model,
+                },
+            )
+        if not found:
+            return self.async_abort(reason="no_ble_appliances")
+        names = {a: f"{m.name} · {m.model} ({a})" for a, m in found.items()}
+        return self.async_show_form(
+            step_id="bluetooth_device",
+            data_schema=vol.Schema(
+                {
+                    vol.Required("address"): vol.In(names),
+                }
+            ),
         )
 
     async def async_step_cache(
@@ -1005,6 +1048,8 @@ class MideaLanOptionsFlowHandler(OptionsFlow):
         Config flow result
 
         """
+        if self._config_entry.data.get("transport") == "bluetooth":
+            return self.async_abort(reason="ble_no_options")
         if self._device_type == CONF_ACCOUNT:
             return self.async_abort(reason="account_option")
         if user_input is not None:

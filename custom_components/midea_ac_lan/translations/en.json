@@ -58,7 +58,16 @@
         },
         "description": "Configuration of appliance",
         "title": "New appliance"
+      },
+      "bluetooth_device": {
+        "title": "Local Bluetooth appliance",
+        "data": {
+          "address": "Appliance"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "No supported Bluetooth appliances found"
     }
   },
   "entity": {
@@ -4358,7 +4367,8 @@
       }
     },
     "abort": {
-      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device."
+      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device.",
+      "ble_no_options": "This Bluetooth appliance has no options"
     }
   },
   "services": {

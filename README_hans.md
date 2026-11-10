@@ -236,3 +236,9 @@ cd midea_ac_lan
 See [exact-model local adapters](doc/local-model-adapters.md) for CWS-F08,
 CAX250GC1M and CWGR-A1 native Python support, installation and tests.
 No Lua runtime or private codec files are required.
+
+### 通过蓝牙代理连接油烟机和燃气热水器
+
+在「添加 Midea AC LAN」中选择「Bluetooth (BLE proxy)」，再选择代理发现的设备。此入口使用 HA Bluetooth 的主动连接能力。查询和写入通过 BLE 会话完成，写入后再次查询设备状态。
+
+已验证的型号为 CXEP930W-C3 AIR（读取电源状态和档位、设置照明）和 JSLQ27-CTE816（读取电源、燃烧反馈、设定温度和出水温度、设置主机提示音）。设置开关仅在设备空闲时可调。设备停止广播或代理不可达时，实体可能暂时显示不可用。

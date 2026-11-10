@@ -38,6 +38,11 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up sensors for device."""
+    if config_entry.data.get("transport") == "bluetooth":
+        from .ble.sensor import async_setup_entry as setup_ble_entities
+
+        await setup_ble_entities(hass, config_entry, async_add_entities)
+        return
     device_id = config_entry.data.get(CONF_DEVICE_ID)
     device = hass.data[DOMAIN][DEVICES].get(device_id)
     extra_sensors = config_entry.options.get(CONF_SENSORS, [])

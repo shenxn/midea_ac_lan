@@ -245,6 +245,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
         If setup is cancelled (e.g. Home Assistant stops), after closing the device.
 
     """
+    if config_entry.data.get("transport") == "bluetooth":
+        from .ble import setup_entry
+
+        return await setup_entry(hass, config_entry)
     device_type = config_entry.data.get(CONF_TYPE)
     if device_type == CONF_ACCOUNT:
         return True
@@ -369,6 +373,10 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     True if entry is unloaded.
 
     """
+    if config_entry.data.get("transport") == "bluetooth":
+        from .ble import unload_entry
+
+        return await unload_entry(hass, config_entry)
     device_type = config_entry.data.get(CONF_TYPE)
     if device_type == CONF_ACCOUNT:
         return True
