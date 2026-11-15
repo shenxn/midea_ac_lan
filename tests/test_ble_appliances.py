@@ -48,3 +48,20 @@ def test_dishwasher_only_encodes_isolated_settings():
     for key in ("start", "program", "power", "operator", "raw"):
         with pytest.raises(ValueError):
             setting(DISH, key, True)
+
+
+def test_purifier_status_and_single_setting():
+    from midea_ac_lan.ble.appliances import PURIFIER, parse
+    from midea_ac_lan.ble.controls import command
+    from midea_ac_lan.ble.protocol import signed
+
+    body = bytes.fromhex("ff0103004008800003105063560000001340c4000a00071218")
+    raw = b"\xaa" + signed(bytes([10 + len(body), 0xED, 0, 0, 0, 0, 0, 0, 3]) + body)
+    state = parse(PURIFIER, raw)
+    assert (state["in_tds"], state["out_tds"], state["inlet"]) == (196, 10, 24)
+    assert (state["ro_life"], state["pcb_life"]) == (99, 86)
+    assert state["controls"]["power"] == "on"
+    assert "antifreeze" not in state["controls"]
+    assert command(PURIFIER, "sleep", "off", {})[10:-1].hex() == "1501010401000000"
+    with pytest.raises(ValueError):
+        parse(PURIFIER, raw[:-1])

@@ -1,7 +1,7 @@
 """Exact-model BLE addresses, query codecs, and reversible settings."""
 
 from dataclasses import dataclass
-from . import dishwasher
+from . import dishwasher, purifier
 from .protocol import signed
 
 
@@ -29,7 +29,14 @@ HEATER = Appliance(
     bytes.fromhex("aa1ee3000000000000030101000000000000000000000000000000000000fa"),
 )
 DISH = Appliance("CDG16QA83K", b"7600002B", 0xE1, "洗碗机", dishwasher.QUERY)
-DEVICES = {device.sn8.decode(): device for device in (HOOD, HEATER, DISH)}
+PURIFIER = Appliance(
+    "CWRC-S1000",
+    b"63200872",
+    0xED,
+    "净水机",
+    b"\xaa" + signed(bytes.fromhex("0ced00000000000003ff01")),
+)
+DEVICES = {device.sn8.decode(): device for device in (HOOD, HEATER, DISH, PURIFIER)}
 
 
 def parse(device, raw):
@@ -44,6 +51,8 @@ def parse(device, raw):
         or raw[9] != 3
     ):
         raise ValueError("Invalid appliance status")
+    if device == PURIFIER:
+        return purifier.parse_body(raw[10:-1])
     if device == HEATER and raw[10:12] == b"\x01\x01" and len(raw) >= 40:
         return {
             "power": bool(raw[12] & 1),

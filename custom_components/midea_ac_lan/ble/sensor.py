@@ -1,5 +1,6 @@
 from homeassistant.components.sensor import SensorEntity
-from .appliances import DISH, HOOD
+from .appliances import DISH, HOOD, PURIFIER
+from . import purifier
 from .entity import ApplianceEntity
 
 
@@ -37,6 +38,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
     )
     if profile == DISH:
         fields = SENSORS
+    if profile == PURIFIER:
+        fields = purifier.SENSORS
     entities = []
     for key, (name, unit) in fields.items():
         sensor = ApplianceSensor(entry.runtime_data, key, name)

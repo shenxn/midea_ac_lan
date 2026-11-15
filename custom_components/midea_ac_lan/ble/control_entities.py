@@ -12,7 +12,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import UnitOfTemperature
 
-from .appliances import DISH
+from .appliances import DISH, PURIFIER
 from .controls import group
 from .entity import ApplianceEntity
 
@@ -139,11 +139,26 @@ class ChildLock(ApplianceEntity, LockEntity):
         await self.coordinator.write("child_lock", False)
 
 
+class PurifierLock(Control, LockEntity):
+    @property
+    def is_locked(self):
+        value = self.observed.get("lock")
+        return value == "on" if value is not None else None
+
+    async def async_lock(self, **kwargs):
+        await self.apply("on")
+
+    async def async_unlock(self, **kwargs):
+        await self.apply("off")
+
+
 def add_controls(entry, add, platform):
     coordinator = entry.runtime_data
     if platform == "lock":
         if coordinator.profile == DISH:
             add([ChildLock(coordinator, "cloud_lock", "童锁")])
+        elif coordinator.profile == PURIFIER:
+            add([PurifierLock(coordinator, "lock", group(PURIFIER)["lock"])])
         return
     cls = {
         "switch": Toggle,

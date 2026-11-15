@@ -1,5 +1,6 @@
 from homeassistant.components.binary_sensor import BinarySensorEntity
-from .appliances import DISH, HOOD
+from .appliances import DISH, HOOD, PURIFIER
+from . import purifier
 from .entity import ApplianceEntity
 
 
@@ -29,6 +30,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
     )
     if profile == DISH:
         fields = NAMES
+    if profile == PURIFIER:
+        fields = purifier.BINARY
     entities = []
     for key, name in fields.items():
         sensor = ApplianceBinary(entry.runtime_data, key, name)

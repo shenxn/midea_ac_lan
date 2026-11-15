@@ -5,6 +5,10 @@ from .protocol import signed
 
 
 def group(device, allow_cycle=False):
+    if device.kind == 0xED:
+        from .purifier import CONTROLS
+
+        return CONTROLS
     catalog = CATALOG[f"{device.kind:02x}"]
     if device.kind != 0xE1 or allow_cycle:
         return catalog

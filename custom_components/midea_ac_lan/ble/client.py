@@ -73,7 +73,8 @@ class Link:
                             [self.profile.kind]
                         ):
                             state = parse(self.profile, raw)
-                            state["controls"] = status_fields(self.profile, raw)
+                            if "controls" not in state:
+                                state["controls"] = status_fields(self.profile, raw)
                             return state
             except TimeoutError:
                 continue
