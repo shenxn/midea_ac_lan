@@ -255,7 +255,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     monkeypatch.setitem(sys.modules, "homeassistant", types.ModuleType("homeassistant"))
     monkeypatch.setitem(sys.modules, "homeassistant.const", fake)
     spec = importlib.util.spec_from_file_location(
-        "local_entities_test",
+        "midea_ac_lan.local_entities_test",
         ROOT / "custom_components/midea_ac_lan/local_entities.py",
     )
     assert spec is not None
@@ -264,6 +264,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     spec.loader.exec_module(m)
     shared: list[tuple[str, int]] = []
     ds = {
+        182: {"entities": {}},
         172: {"entities": {"climate": {"excluded_devices": shared}}},
         237: {
             "entities": {
@@ -285,6 +286,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     assert ds[237]["entities"]["power"]["excluded_devices"] == []
     assert ds[237]["entities"]["child_lock"]["excluded_devices"] == []
     assert ds[237]["entities"]["cur_quantify"]["excluded_devices"] == [
+        ("632009CN", 845),
         ("6320088A", 1046),
     ]
 

@@ -4,10 +4,15 @@ from typing import Any
 
 from homeassistant.const import Platform
 
+from .hood_entities import register_hood_entities
+from .purifier_entities import register_purifier_entities
+
 
 def register_local_entities(devices: dict[int, Any]) -> None:
     """Register exact-model metadata without mutating shared exclusion lists."""
+    register_hood_entities(devices[182]["entities"])
     soft = devices[237]["entities"]
+    register_purifier_entities(soft)
     names = {
         "water_consumption_today": ("今日用水量", "L"),
         "pre_regeneration_days": ("预再生天数", "d"),

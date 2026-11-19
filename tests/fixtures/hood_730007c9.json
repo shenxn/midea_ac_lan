@@ -1,0 +1,66 @@
+{
+  "encode": [
+    {
+      "attribute": "gesture",
+      "value": false,
+      "hex": "aa11b6000000000000021101020300ffff22"
+    },
+    {
+      "attribute": "gesture",
+      "value": true,
+      "hex": "aa11b6000000000000021101020301ffff21"
+    },
+    {
+      "attribute": "linkage",
+      "value": false,
+      "hex": "aa0fb60000000000000211010208001d"
+    },
+    {
+      "attribute": "linkage",
+      "value": true,
+      "hex": "aa0fb60000000000000211010208011c"
+    },
+    {
+      "attribute": "wisdom_wind",
+      "value": false,
+      "hex": "aa12b600000000000002110101ff0d02ffff17"
+    },
+    {
+      "attribute": "wisdom_wind",
+      "value": true,
+      "hex": "aa12b600000000000002110101ff0d01ffff18"
+    }
+  ],
+  "decode": [
+    {
+      "hex": "aa3fb60000000000020311013100010000000000000000000001a10000000000000000000000000001b400000000000000000000000000000000000000006308",
+      "expected": {
+        "wisdom_wind": "off",
+        "linkage": "on",
+        "gesture": "on",
+        "error_code": 0,
+        "wind_pressure": 436
+      }
+    },
+    {
+      "hex": "aa3fb60000000000020311013100020000000000000000000001a10000000000000000000000000001b400000000000000000000000000000000000000006307",
+      "expected": {
+        "wisdom_wind": "off",
+        "linkage": "on",
+        "gesture": "on",
+        "error_code": 0,
+        "wind_pressure": 436
+      }
+    },
+    {
+      "hex": "aa3fb600000000000203110131000d0000000000000000000001a10000000000000000000000000001b4000000000000000000000000000000000000000063fc",
+      "expected": {
+        "wisdom_wind": "on",
+        "linkage": "on",
+        "gesture": "on",
+        "error_code": 0,
+        "wind_pressure": 436
+      }
+    }
+  ]
+}

@@ -19,6 +19,7 @@ from midealan.devices import device_selector as upstream_selector
 from midealan.devices.ac import MideaACDevice
 from midealan.devices.ed import MideaEDDevice
 
+from .hood_model import Hood730007C9
 from .hydronic_protocol import FLAGS, hydronic_control, hydronic_query, hydronic_status
 from .kitchen_protocol import (
     KITCHEN_SWITCHES,
@@ -27,8 +28,11 @@ from .kitchen_protocol import (
     kitchen_status,
 )
 from .local_protocol import ModelCodec as Codec
+from .purifier_model import Purifier632009CN
 
 SUPPORTED_MODELS = {
+    (182, "730007C9", 0),
+    (237, "632009CN", 845),
     (172, "22397091", 1),
     (237, "6320088A", 1046),
     (237, "6360000F", 845),
@@ -605,6 +609,8 @@ def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:
     values = dict(values)
     values.pop("device_type")
     cls = {
+        (237, "632009CN", 845): Purifier632009CN,
+        (182, "730007C9", 0): Hood730007C9,
         (237, "6360000F", 845): Softener845,
         (237, "6320088A", 1046): PipeDispenser1046,
         (172, "24297131", 1): FreshAir24297131,
