@@ -58,7 +58,16 @@
         },
         "description": "Konfigurace spotřebiče",
         "title": "Nový spotřebič"
+      },
+      "bluetooth_device": {
+        "title": "Místní zařízení Bluetooth",
+        "data": {
+          "address": "Zařízení"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nebyla nalezena žádná podporovaná zařízení Bluetooth"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Přizpůsobit",
           "account": "Cloudový účet Midea (pro senzory statistik využití)",
           "password": "Heslo cloudového účtu Midea (pro senzory statistik využití)",
-          "server": "Cloudový server Midea pro účet (pro senzory statistik využití)"
+          "server": "Cloudový server Midea pro účet (pro senzory statistik využití)",
+          "allow_dishwasher_cycle": "Povolit spuštění mytí výběrem programu a jeho obnovení"
         },
         "title": "Konfigurovat"
       }
     },
     "abort": {
-      "account_option": "Účet tuto operaci nepodporuje.\nKliknutím na \"PŘIDAT ZAŘÍZENÍ\" přidáte nové zařízení."
+      "account_option": "Účet tuto operaci nepodporuje.\nKliknutím na \"PŘIDAT ZAŘÍZENÍ\" přidáte nové zařízení.",
+      "ble_no_options": "Toto zařízení Bluetooth nemá žádné možnosti"
     }
   },
   "services": {

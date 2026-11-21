@@ -58,7 +58,16 @@
         },
         "description": "Konfiguracja urządzenia",
         "title": "Nowe urządzenie"
+      },
+      "bluetooth_device": {
+        "title": "Lokalne urządzenie Bluetooth",
+        "data": {
+          "address": "Urządzenie"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nie znaleziono obsługiwanych urządzeń Bluetooth"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Dostosuj",
           "account": "Konto w chmurze Midea (dla czujników statystyk użycia)",
           "password": "Hasło konta w chmurze Midea (dla czujników statystyk użycia)",
-          "server": "Serwer chmury Midea dla konta (dla czujników statystyk użycia)"
+          "server": "Serwer chmury Midea dla konta (dla czujników statystyk użycia)",
+          "allow_dishwasher_cycle": "Zezwól na rozpoczęcie zmywania przez wybór programu i jego wznowienie"
         },
         "title": "Konfiguruj"
       }
     },
     "abort": {
-      "account_option": "To konto nie obsługuje tej operacji.\nKliknij \"DODAJ URZĄDZENIE\", aby  dodać nowe urządzenie."
+      "account_option": "To konto nie obsługuje tej operacji.\nKliknij \"DODAJ URZĄDZENIE\", aby  dodać nowe urządzenie.",
+      "ble_no_options": "To urządzenie Bluetooth nie ma opcji"
     }
   },
   "services": {

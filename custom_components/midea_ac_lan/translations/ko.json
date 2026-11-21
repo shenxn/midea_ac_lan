@@ -58,7 +58,16 @@
         },
         "description": "기기 구성",
         "title": "새 기기"
+      },
+      "bluetooth_device": {
+        "title": "로컬 Bluetooth 가전",
+        "data": {
+          "address": "가전"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "지원되는 Bluetooth 가전을 찾지 못했습니다"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "사용자 지정",
           "account": "Midea 클라우드 계정 (사용량 통계 센서용)",
           "password": "Midea 클라우드 계정 비밀번호 (사용량 통계 센서용)",
-          "server": "계정의 Midea 클라우드 서버 (사용량 통계 센서용)"
+          "server": "계정의 Midea 클라우드 서버 (사용량 통계 센서용)",
+          "allow_dishwasher_cycle": "프로그램 선택으로 세척 시작 및 재개 허용"
         },
         "title": "구성"
       }
     },
     "abort": {
-      "account_option": "이 계정은 이 작업을 지원하지 않습니다.\n\"기기 추가\"를 클릭하여 새 기기를 추가하세요."
+      "account_option": "이 계정은 이 작업을 지원하지 않습니다.\n\"기기 추가\"를 클릭하여 새 기기를 추가하세요.",
+      "ble_no_options": "이 Bluetooth 가전에는 설정 옵션이 없습니다"
     }
   },
   "services": {

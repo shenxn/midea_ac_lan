@@ -58,7 +58,16 @@
         },
         "description": "Configuració de l'electrodomèstic",
         "title": "Electrodomèstic nou"
+      },
+      "bluetooth_device": {
+        "title": "Electrodomèstic Bluetooth local",
+        "data": {
+          "address": "Electrodomèstic"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "No s’han trobat electrodomèstics Bluetooth compatibles"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Personalitza",
           "account": "Compte del núvol de Midea (per als sensors d'estadístiques d'ús)",
           "password": "Contrasenya del compte del núvol de Midea (per als sensors d'estadístiques d'ús)",
-          "server": "Servidor del núvol de Midea del compte (per als sensors d'estadístiques d'ús)"
+          "server": "Servidor del núvol de Midea del compte (per als sensors d'estadístiques d'ús)",
+          "allow_dishwasher_cycle": "Permet iniciar el rentat seleccionant un programa i reprendre’l"
         },
         "title": "Configura"
       }
     },
     "abort": {
-      "account_option": "El compte no admet aquesta operació.\nFeu clic a \"AFEGEIX UN DISPOSITIU\" per afegir un dispositiu nou."
+      "account_option": "El compte no admet aquesta operació.\nFeu clic a \"AFEGEIX UN DISPOSITIU\" per afegir un dispositiu nou.",
+      "ble_no_options": "Aquest electrodomèstic Bluetooth no té opcions"
     }
   },
   "services": {

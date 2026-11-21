@@ -58,7 +58,16 @@
         },
         "description": "Konfigurácia spotrebiča",
         "title": "Nový spotrebič"
+      },
+      "bluetooth_device": {
+        "title": "Lokálne zariadenie Bluetooth",
+        "data": {
+          "address": "Zariadenie"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nenašli sa žiadne podporované zariadenia Bluetooth"
     }
   },
   "entity": {
@@ -4853,13 +4862,15 @@
           "refresh_interval": "Refresh interval (0 means not refreshing actively)",
           "sensors": "Extra Snímače",
           "switches": "Extra Ovládacie prvky",
-          "customize": "Voliteľné"
+          "customize": "Voliteľné",
+          "allow_dishwasher_cycle": "Povoliť spustenie umývania výberom programu a jeho obnovenie"
         },
         "title": "Konfigurovať"
       }
     },
     "abort": {
-      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device."
+      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device.",
+      "ble_no_options": "Toto zariadenie Bluetooth nemá žiadne možnosti"
     }
   },
   "services": {

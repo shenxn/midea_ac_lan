@@ -58,7 +58,16 @@
         },
         "description": "Настройка устройства",
         "title": "Новое устройство"
+      },
+      "bluetooth_device": {
+        "title": "Локальный прибор Bluetooth",
+        "data": {
+          "address": "Прибор"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Поддерживаемые приборы Bluetooth не найдены"
     }
   },
   "entity": {
@@ -4904,13 +4913,15 @@
           "refresh_interval": "Интервал обновления (0 не выполняет активное обновление)",
           "sensors": "Дополнительные сенсоры",
           "switches": "Дополнительные элементы управления",
-          "customize": "Настроить"
+          "customize": "Настроить",
+          "allow_dishwasher_cycle": "Разрешить запуск мойки выбором программы и возобновление мойки"
         },
         "title": "Конфигурация"
       }
     },
     "abort": {
-      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device."
+      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device.",
+      "ble_no_options": "У этого прибора Bluetooth нет настроек"
     }
   },
   "services": {

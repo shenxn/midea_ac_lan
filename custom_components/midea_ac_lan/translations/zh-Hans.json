@@ -58,7 +58,16 @@
         },
         "description": "配置设备参数",
         "title": "新设备"
+      },
+      "bluetooth_device": {
+        "title": "本地蓝牙设备",
+        "data": {
+          "address": "设备"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "未发现支持的蓝牙设备"
     }
   },
   "entity": {
@@ -4944,13 +4953,15 @@
           "customize": "自定义",
           "account": "美的云账号（用于用水/用气量统计传感器）",
           "password": "美的云账号密码（用于用水/用气量统计传感器）",
-          "server": "账号所属美的云服务器（用于用水/用气量统计传感器）"
+          "server": "账号所属美的云服务器（用于用水/用气量统计传感器）",
+          "allow_dishwasher_cycle": "允许选择程序启动洗涤、恢复运行"
         },
         "title": "配置"
       }
     },
     "abort": {
-      "account_option": "账户配置不支持此操作.\n点击\"添加设备\"完成添加新设备的操作"
+      "account_option": "账户配置不支持此操作.\n点击\"添加设备\"完成添加新设备的操作",
+      "ble_no_options": "此蓝牙设备没有配置选项"
     }
   },
   "services": {

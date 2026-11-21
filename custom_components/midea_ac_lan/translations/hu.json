@@ -58,7 +58,16 @@
         },
         "description": "Eszköz konfigurációja",
         "title": "Új eszköz"
+      },
+      "bluetooth_device": {
+        "title": "Helyi Bluetooth-készülék",
+        "data": {
+          "address": "Készülék"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nem található támogatott Bluetooth-készülék"
     }
   },
   "entity": {
@@ -4850,13 +4859,15 @@
           "refresh_interval": "Frissítési intervallum (0 azt jelenti, hogy nincs aktív frissítés)",
           "sensors": "Extra érzékelők",
           "switches": "Extra vezérlők",
-          "customize": "Személyre szabás"
+          "customize": "Személyre szabás",
+          "allow_dishwasher_cycle": "Mosás indításának engedélyezése programválasztással és a mosás folytatása"
         },
         "title": "Konfigurálás"
       }
     },
     "abort": {
-      "account_option": "A fiók nem támogatja ezt a műveletet.\nKattintson az \"ESZKÖZ HOZZÁADÁSA\" gombra egy új eszköz hozzáadásához."
+      "account_option": "A fiók nem támogatja ezt a műveletet.\nKattintson az \"ESZKÖZ HOZZÁADÁSA\" gombra egy új eszköz hozzáadásához.",
+      "ble_no_options": "Ehhez a Bluetooth-készülékhez nincsenek beállítások"
     }
   },
   "services": {

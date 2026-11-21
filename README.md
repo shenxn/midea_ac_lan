@@ -321,3 +321,16 @@ If this project helps you, consider sponsoring its ongoing development, maintena
 See [exact-model local adapters](doc/local-model-adapters.md) for CWS-F08,
 CAX250GC1M and CWGR-A1 native Python support, installation and tests.
 No Lua runtime or private codec files are required.
+
+### Bluetooth appliances in this personal fork
+
+Choose **Bluetooth (BLE proxy)** when adding Midea AC LAN, then select a recognized appliance advertised by a connectable Home Assistant Bluetooth scanner or proxy. Queries and writes use authenticated BLE sessions; writes are confirmed by querying device state. A sleeping appliance or an unreachable proxy may temporarily appear unavailable.
+
+Supported exact models:
+
+- **COLMO CWRC-S1000 (`63200872`) purifier**: TDS, filter life, inlet temperature, water and gesture status, and reported switches/child lock. Missing firmware fields remain unknown. Existing Bluetooth entity identifiers are preserved.
+- **COLMO CDG16QA83K dishwasher**: status, beep, child lock, hot-water/UV preferences, knock-to-open, storage/drying settings and working state. Program selection starts washing, so cycle start/resume and active drying/storage require the separate, default-off options setting. The transport enforces this restriction too. To migrate the standalone COLMO Dishwasher BLE integration, disable its entry first, then select the same appliance here; entity IDs and the area are retained while the device ID changes.
+- **COLMO CXEP930W-C3 AIR hood**: power, fan level, smart wind, inverter mode, light and brightness, air curtain, linkage, AI butler, smoke detection, gesture actions and sensitivity. Burner-off buttons require a reported burner state.
+- **COLMO JSLQ27-CTE816 gas water heater**: power, temperature, hot-water modes, bubble, circulation modes, bathtub, litre selection, safety mode, high-temperature lock and three personal modes. Bathtub/personal-mode commands require a valid companion water-level/temperature readback. Independent temperature commands use whole degrees from 20 to 60°C. Intelligence and unfreeze are not exposed as separate writable modes because this exact-model encoder does not distinguish their commands.
+
+The hood light and heater beep preferences require idle state. Extended controls expose only independently distinguishable commands; an unconfirmed write raises an error rather than assigning optimistic state. The BLE thermostat uses the same HA temperature compatibility layer as LAN thermostats.

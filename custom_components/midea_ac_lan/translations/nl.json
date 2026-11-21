@@ -58,7 +58,16 @@
         },
         "description": "Configuratie van apparaat",
         "title": "Nieuw apparaat"
+      },
+      "bluetooth_device": {
+        "title": "Lokaal Bluetooth-apparaat",
+        "data": {
+          "address": "Apparaat"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Geen ondersteunde Bluetooth-apparaten gevonden"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Aanpassen",
           "account": "Midea cloud-account (voor de verbruiksstatistieksensoren)",
           "password": "Wachtwoord Midea cloud-account (voor de verbruiksstatistieksensoren)",
-          "server": "Midea cloud-server van het account (voor de verbruiksstatistieksensoren)"
+          "server": "Midea cloud-server van het account (voor de verbruiksstatistieksensoren)",
+          "allow_dishwasher_cycle": "Wassen starten via programmakeuze en hervatten toestaan"
         },
         "title": "Configureren"
       }
     },
     "abort": {
-      "account_option": "Het account ondersteunt deze bewerking niet.\nKlik op \"APPARAAT TOEVOEGEN\" om een nieuw apparaat toe te voegen."
+      "account_option": "Het account ondersteunt deze bewerking niet.\nKlik op \"APPARAAT TOEVOEGEN\" om een nieuw apparaat toe te voegen.",
+      "ble_no_options": "Dit Bluetooth-apparaat heeft geen opties"
     }
   },
   "services": {

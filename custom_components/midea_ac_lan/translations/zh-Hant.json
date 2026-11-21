@@ -58,7 +58,16 @@
         },
         "description": "家電設定",
         "title": "新家電"
+      },
+      "bluetooth_device": {
+        "title": "本機藍牙家電",
+        "data": {
+          "address": "家電"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "未找到支援的藍牙家電"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "自訂",
           "account": "Midea 雲端帳號（用於使用量統計感測器）",
           "password": "Midea 雲端帳號密碼（用於使用量統計感測器）",
-          "server": "帳號所屬的 Midea 雲端伺服器（用於使用量統計感測器）"
+          "server": "帳號所屬的 Midea 雲端伺服器（用於使用量統計感測器）",
+          "allow_dishwasher_cycle": "允許選擇程式啟動洗滌及繼續洗滌"
         },
         "title": "設定"
       }
     },
     "abort": {
-      "account_option": "此帳號不支援此操作。\n請點選「新增裝置」以加入新裝置。"
+      "account_option": "此帳號不支援此操作。\n請點選「新增裝置」以加入新裝置。",
+      "ble_no_options": "此藍牙家電沒有設定選項"
     }
   },
   "services": {

@@ -58,7 +58,16 @@
         },
         "description": "Gailuaren konfigurazioa",
         "title": "Gailu berria"
+      },
+      "bluetooth_device": {
+        "title": "Tokiko Bluetooth gailua",
+        "data": {
+          "address": "Gailua"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Ez da Bluetooth gailu bateragarririk aurkitu"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Pertsonalizatu",
           "account": "Midea hodeiko kontua (erabilera-estatistiken sentsoreetarako)",
           "password": "Midea hodeiko kontuaren pasahitza (erabilera-estatistiken sentsoreetarako)",
-          "server": "Kontuaren Midea hodeiko zerbitzaria (erabilera-estatistiken sentsoreetarako)"
+          "server": "Kontuaren Midea hodeiko zerbitzaria (erabilera-estatistiken sentsoreetarako)",
+          "allow_dishwasher_cycle": "Baimendu programa hautatzean garbiketa hastea eta etendako garbiketa jarraitzea"
         },
         "title": "Konfiguratu"
       }
     },
     "abort": {
-      "account_option": "Kontuak ez du eragiketa hau onartzen.\nEgin klik \"GEHITU GAILUA\" botoian gailu berria gehitzeko."
+      "account_option": "Kontuak ez du eragiketa hau onartzen.\nEgin klik \"GEHITU GAILUA\" botoian gailu berria gehitzeko.",
+      "ble_no_options": "Bluetooth gailu honek ez du aukerarik"
     }
   },
   "services": {

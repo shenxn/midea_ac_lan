@@ -58,7 +58,16 @@
         },
         "description": "Cihaz yapılandırması",
         "title": "Yeni cihaz"
+      },
+      "bluetooth_device": {
+        "title": "Yerel Bluetooth cihazı",
+        "data": {
+          "address": "Cihaz"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Desteklenen Bluetooth cihazı bulunamadı"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Özelleştir",
           "account": "Midea bulut hesabı (kullanım istatistiği sensörleri için)",
           "password": "Midea bulut hesabı parolası (kullanım istatistiği sensörleri için)",
-          "server": "Hesabın Midea bulut sunucusu (kullanım istatistiği sensörleri için)"
+          "server": "Hesabın Midea bulut sunucusu (kullanım istatistiği sensörleri için)",
+          "allow_dishwasher_cycle": "Program seçimiyle yıkamayı başlatmaya ve sürdürmeye izin ver"
         },
         "title": "Yapılandır"
       }
     },
     "abort": {
-      "account_option": "Hesap bu işlemi desteklemiyor.\nYeni bir cihaz eklemek için \"CİHAZ EKLE\" düğmesine tıklayın."
+      "account_option": "Hesap bu işlemi desteklemiyor.\nYeni bir cihaz eklemek için \"CİHAZ EKLE\" düğmesine tıklayın.",
+      "ble_no_options": "Bu Bluetooth cihazının seçenekleri yok"
     }
   },
   "services": {

@@ -58,7 +58,16 @@
         },
         "description": "Configuration de l'appareil",
         "title": "Nouvel apparel"
+      },
+      "bluetooth_device": {
+        "title": "Appareil Bluetooth local",
+        "data": {
+          "address": "Appareil"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Aucun appareil Bluetooth compatible trouvé"
     }
   },
   "entity": {
@@ -4850,13 +4859,15 @@
           "refresh_interval": "Refresh interval (0 means not refreshing actively)",
           "sensors": "Capteurs supplémentaire",
           "switches": "Contrôles supplémentaire",
-          "customize": "Personnaliser"
+          "customize": "Personnaliser",
+          "allow_dishwasher_cycle": "Autoriser le démarrage par sélection du programme et la reprise du lavage"
         },
         "title": "Configurer"
       }
     },
     "abort": {
-      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device."
+      "account_option": "The account does not supports this operation.\nClick \"ADD DEVICE\" to  add a new device.",
+      "ble_no_options": "Cet appareil Bluetooth ne propose aucune option"
     }
   },
   "services": {

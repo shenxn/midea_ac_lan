@@ -41,6 +41,7 @@ dev = [
 
 # These extracted harness releases pin the same HA versions as the dev baseline.
 test = [
+  "pyserial==3.5",  # HA Bluetooth imports its USB discovery helper.
   "pytest-homeassistant-custom-component==0.13.205 ; python_version == '3.12'",
   "pytest-homeassistant-custom-component==0.13.205 ; python_version == '3.13'",
   "pytest-homeassistant-custom-component==0.13.317 ; python_full_version >= '3.14.2'",
@@ -49,6 +50,10 @@ test = [
 
 # The centrally maintained harness currently starts with HA 2026.11 prereleases.
 test-current = [
+  "aiohasupervisor==0.8.1",  # Imported by HA USB discovery.
+  "aiousbwatcher==1.1.2",  # HA Bluetooth imports USB discovery.
+  "serialx==1.15.1",
+  "habluetooth==7.1.2",  # Match HA 2026.11 Bluetooth requirements.
   "pytest-homeassistant==2026.11.0b4",
   "pytest-cov==7.1.0",
 ]

@@ -58,7 +58,16 @@
         },
         "description": "Configuración del electrodoméstico",
         "title": "Nuevo electrodoméstico"
+      },
+      "bluetooth_device": {
+        "title": "Electrodoméstico Bluetooth local",
+        "data": {
+          "address": "Electrodoméstico"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "No se encontraron electrodomésticos Bluetooth compatibles"
     }
   },
   "entity": {
@@ -4964,13 +4973,15 @@
           "refresh_interval": "Intervalo de actualización (0 significa no actualizar activamente)",
           "sensors": "Sensores extra",
           "switches": "Controles extra",
-          "customize": "Personalizar"
+          "customize": "Personalizar",
+          "allow_dishwasher_cycle": "Permitir iniciar el lavado al seleccionar un programa y reanudarlo"
         },
         "title": "Configurar"
       }
     },
     "abort": {
-      "account_option": "La cuenta no admite esta operación.\nHaga clic en \"AÑADIR DISPOSITIVO\" para agregar un nuevo dispositivo."
+      "account_option": "La cuenta no admite esta operación.\nHaga clic en \"AÑADIR DISPOSITIVO\" para agregar un nuevo dispositivo.",
+      "ble_no_options": "Este electrodoméstico Bluetooth no tiene opciones"
     }
   },
   "services": {

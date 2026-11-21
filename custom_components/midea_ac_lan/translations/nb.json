@@ -58,7 +58,16 @@
         },
         "description": "Konfigurasjon av apparat",
         "title": "Nytt apparat"
+      },
+      "bluetooth_device": {
+        "title": "Lokalt Bluetooth-apparat",
+        "data": {
+          "address": "Apparat"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Fant ingen støttede Bluetooth-apparater"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Tilpass",
           "account": "Midea-skykonto (for sensorene for bruksstatistikk)",
           "password": "Passord for Midea-skykonto (for sensorene for bruksstatistikk)",
-          "server": "Midea-skyserver for kontoen (for sensorene for bruksstatistikk)"
+          "server": "Midea-skyserver for kontoen (for sensorene for bruksstatistikk)",
+          "allow_dishwasher_cycle": "Tillat å starte vask ved programvalg og gjenoppta vask"
         },
         "title": "Konfigurer"
       }
     },
     "abort": {
-      "account_option": "Kontoen støtter ikke denne operasjonen.\nKlikk \"LEGG TIL ENHET\" for å  legge til en ny enhet."
+      "account_option": "Kontoen støtter ikke denne operasjonen.\nKlikk \"LEGG TIL ENHET\" for å  legge til en ny enhet.",
+      "ble_no_options": "Dette Bluetooth-apparatet har ingen alternativer"
     }
   },
   "services": {

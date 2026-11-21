@@ -58,7 +58,16 @@
         },
         "description": "Konfiguracija naprave",
         "title": "Nova naprava"
+      },
+      "bluetooth_device": {
+        "title": "Lokalna naprava Bluetooth",
+        "data": {
+          "address": "Naprava"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Ni najdenih podprtih naprav Bluetooth"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Prilagodi",
           "account": "Oblačni račun Midea (za senzorje statistike porabe)",
           "password": "Geslo oblačnega računa Midea (za senzorje statistike porabe)",
-          "server": "Oblačni strežnik računa Midea (za senzorje statistike porabe)"
+          "server": "Oblačni strežnik računa Midea (za senzorje statistike porabe)",
+          "allow_dishwasher_cycle": "Dovoli začetek pomivanja z izbiro programa in nadaljevanje pomivanja"
         },
         "title": "Konfiguriraj"
       }
     },
     "abort": {
-      "account_option": "Ta račun ne podpira te operacije.\nKliknite \"DODAJ NAPRAVO\" za  dodajanje nove naprave."
+      "account_option": "Ta račun ne podpira te operacije.\nKliknite \"DODAJ NAPRAVO\" za  dodajanje nove naprave.",
+      "ble_no_options": "Ta naprava Bluetooth nima možnosti"
     }
   },
   "services": {

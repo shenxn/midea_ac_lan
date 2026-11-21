@@ -58,7 +58,16 @@
         },
         "description": "Configuração do aparelho",
         "title": "Novo aparelho"
+      },
+      "bluetooth_device": {
+        "title": "Eletrodoméstico Bluetooth local",
+        "data": {
+          "address": "Eletrodoméstico"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nenhum eletrodoméstico Bluetooth compatível encontrado"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Personalizar",
           "account": "Conta da nuvem Midea (para os sensores de estatísticas de utilização)",
           "password": "Palavra-passe da conta da nuvem Midea (para os sensores de estatísticas de utilização)",
-          "server": "Servidor da nuvem Midea da conta (para os sensores de estatísticas de utilização)"
+          "server": "Servidor da nuvem Midea da conta (para os sensores de estatísticas de utilização)",
+          "allow_dishwasher_cycle": "Permitir iniciar a lavagem ao selecionar um programa e retomá-la"
         },
         "title": "Configurar"
       }
     },
     "abort": {
-      "account_option": "A conta não suporta esta operação.\nClique em \"ADICIONAR DISPOSITIVO\" para  adicionar um novo dispositivo."
+      "account_option": "A conta não suporta esta operação.\nClique em \"ADICIONAR DISPOSITIVO\" para  adicionar um novo dispositivo.",
+      "ble_no_options": "Este eletrodoméstico Bluetooth não tem opções"
     }
   },
   "services": {

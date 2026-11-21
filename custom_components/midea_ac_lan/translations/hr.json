@@ -58,7 +58,16 @@
         },
         "description": "Konfiguracija uređaja",
         "title": "Novi uređaj"
+      },
+      "bluetooth_device": {
+        "title": "Lokalni Bluetooth uređaj",
+        "data": {
+          "address": "Uređaj"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nisu pronađeni podržani Bluetooth uređaji"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Prilagodi",
           "account": "Midea račun u oblaku (za senzore statistike korištenja)",
           "password": "Lozinka Midea računa u oblaku (za senzore statistike korištenja)",
-          "server": "Midea poslužitelj u oblaku za račun (za senzore statistike korištenja)"
+          "server": "Midea poslužitelj u oblaku za račun (za senzore statistike korištenja)",
+          "allow_dishwasher_cycle": "Dopusti pokretanje pranja odabirom programa i nastavak pranja"
         },
         "title": "Konfiguriraj"
       }
     },
     "abort": {
-      "account_option": "Račun ne podržava ovu radnju.\nKliknite \"ADD DEVICE\" za  dodavanje novog uređaja."
+      "account_option": "Račun ne podržava ovu radnju.\nKliknite \"ADD DEVICE\" za  dodavanje novog uređaja.",
+      "ble_no_options": "Ovaj Bluetooth uređaj nema opcija"
     }
   },
   "services": {

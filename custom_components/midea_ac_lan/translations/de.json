@@ -58,7 +58,16 @@
         },
         "description": "Konfiguration des Geräts",
         "title": "Neues Gerät"
+      },
+      "bluetooth_device": {
+        "title": "Lokales Bluetooth-Gerät",
+        "data": {
+          "address": "Gerät"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Keine unterstützten Bluetooth-Geräte gefunden"
     }
   },
   "entity": {
@@ -4853,13 +4862,15 @@
           "refresh_interval": "Aktualisierungsintervall (0 bedeutet, dass nicht aktiv aktualisiert wird)",
           "sensors": "Zusätzliche Sensoren",
           "switches": "Zusätzliche Schalter",
-          "customize": "Anpassen"
+          "customize": "Anpassen",
+          "allow_dishwasher_cycle": "Waschstart durch Programmauswahl und Fortsetzen erlauben"
         },
         "title": "Konfiguration"
       }
     },
     "abort": {
-      "account_option": "Das Konto unterstützt diesen Vorgang nicht.\nKlicken Sie auf \"GERÄT HINZUFÜGEN\" um ein neues Gerät hinzuzufügen."
+      "account_option": "Das Konto unterstützt diesen Vorgang nicht.\nKlicken Sie auf \"GERÄT HINZUFÜGEN\" um ein neues Gerät hinzuzufügen.",
+      "ble_no_options": "Dieses Bluetooth-Gerät hat keine Optionen"
     }
   },
   "services": {

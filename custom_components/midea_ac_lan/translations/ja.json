@@ -58,7 +58,16 @@
         },
         "description": "機器の設定",
         "title": "新しい機器"
+      },
+      "bluetooth_device": {
+        "title": "ローカル Bluetooth 家電",
+        "data": {
+          "address": "家電"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "対応する Bluetooth 家電が見つかりません"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "カスタマイズ",
           "account": "Midea クラウドアカウント（使用量統計センサー用）",
           "password": "Midea クラウドアカウントのパスワード（使用量統計センサー用）",
-          "server": "アカウントの Midea クラウドサーバー（使用量統計センサー用）"
+          "server": "アカウントの Midea クラウドサーバー（使用量統計センサー用）",
+          "allow_dishwasher_cycle": "プログラム選択による洗浄開始と洗浄の再開を許可する"
         },
         "title": "設定"
       }
     },
     "abort": {
-      "account_option": "このアカウントではこの操作に対応していません。\n「機器を追加」をクリックして新しい機器を追加してください。"
+      "account_option": "このアカウントではこの操作に対応していません。\n「機器を追加」をクリックして新しい機器を追加してください。",
+      "ble_no_options": "この Bluetooth 家電には設定項目がありません"
     }
   },
   "services": {

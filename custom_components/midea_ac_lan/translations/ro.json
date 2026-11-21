@@ -58,7 +58,16 @@
         },
         "description": "Configurarea aparatului",
         "title": "Aparat nou"
+      },
+      "bluetooth_device": {
+        "title": "Aparat Bluetooth local",
+        "data": {
+          "address": "Aparat"
+        }
       }
+    },
+    "abort": {
+      "no_ble_appliances": "Nu au fost găsite aparate Bluetooth compatibile"
     }
   },
   "entity": {
@@ -5004,13 +5013,15 @@
           "customize": "Personalizare",
           "account": "Cont cloud Midea (pentru senzorii de statistici de utilizare)",
           "password": "Parolă cont cloud Midea (pentru senzorii de statistici de utilizare)",
-          "server": "Server cloud Midea al contului (pentru senzorii de statistici de utilizare)"
+          "server": "Server cloud Midea al contului (pentru senzorii de statistici de utilizare)",
+          "allow_dishwasher_cycle": "Permite pornirea spălării prin selectarea programului și reluarea spălării"
         },
         "title": "Configurare"
       }
     },
     "abort": {
-      "account_option": "Contul nu acceptă această operație.\nFaceți clic pe \"ADĂUGARE DISPOZITIV\" pentru a  adăuga un dispozitiv nou."
+      "account_option": "Contul nu acceptă această operație.\nFaceți clic pe \"ADĂUGARE DISPOZITIV\" pentru a  adăuga un dispozitiv nou.",
+      "ble_no_options": "Acest aparat Bluetooth nu are opțiuni"
     }
   },
   "services": {
