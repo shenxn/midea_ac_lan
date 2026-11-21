@@ -12,13 +12,14 @@ from homeassistant.components.climate import (
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
 from .midea_entity import MideaEntity
+from .native_temperature import NativeTemperatureCompat
 
 
-class MideaHydronicClimate(MideaEntity, ClimateEntity):
+class MideaHydronicClimate(NativeTemperatureCompat, MideaEntity, ClimateEntity):
     """Expose water settings without using the indoor AC thermostat methods."""
 
     _enable_turn_on_off_backwards_compatibility = False
-    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_min_temp = 25
     _attr_max_temp = 60
     _attr_target_temperature_step = 1
@@ -38,7 +39,7 @@ class MideaHydronicClimate(MideaEntity, ClimateEntity):
         return None if value is None else HVACMode.HEAT if value else HVACMode.OFF
 
     @property
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         """The reported water setpoint."""
         return cast(
             "float | None",
@@ -46,7 +47,7 @@ class MideaHydronicClimate(MideaEntity, ClimateEntity):
         )
 
     @property
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         """Measured outlet water temperature."""
         return cast(
             "float | None",

@@ -1,31 +1,37 @@
 """632009CN protocol parity, integrity, isolation and honest state regressions."""
 
 # Test literals are independent protocol vectors and range boundaries.
-# ruff: file-ignore[magic-value-comparison, pytest-raises-too-broad]
+# ruff: file-ignore[pytest-raises-too-broad, any-type]
 
 import json
 from pathlib import Path
+from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan.local_entities import register_local_entities
-from midea_ac_lan.local_models import Purifier632009CN, Softener845, device_selector
-from midea_ac_lan.local_protocol import frame
-from midea_ac_lan.purifier_protocol import (
+from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.local_entities import register_local_entities
+from custom_components.midea_ac_lan.local_models import (
+    Purifier632009CN,
+    Softener845,
+    device_selector,
+)
+from custom_components.midea_ac_lan.local_protocol import frame
+from custom_components.midea_ac_lan.purifier_protocol import (
     FIELDS,
     FLAGS,
     purifier_control,
     purifier_query,
     purifier_status,
 )
-from midealan.const import ProtocolVersion
 
 VECTORS = json.loads(
     (Path(__file__).parent / "fixtures/purifier_632009cn.json").read_text(),
 )
 
 
-def make(model: str = "632009CN") -> Purifier632009CN:
+def make(model: str = "632009CN") -> Any:
     """Create an offline device through the actual model dispatcher."""
     return device_selector(
         name="test",
@@ -117,7 +123,7 @@ def test_exact_dispatch_and_no_optimistic_state() -> None:
     assert isinstance(d, Purifier632009CN)
     assert isinstance(make("6360000F"), Softener845)
     assert not isinstance(make("unknown"), Purifier632009CN)
-    d.build_send = Mock()
+    d.build_send = Mock()  # type: ignore[method-assign]
     with pytest.raises(ValueError, match="report"):
         d.set_attribute("purifier_quantify_23", 3500)
     d.process_message(bytes.fromhex(VECTORS["decode"][0]["hex"]))
@@ -143,7 +149,11 @@ def test_unknown_records_and_ack() -> None:
 
 def test_entity_metadata_is_model_scoped() -> None:
     """New default entities stay within the precise model and have bounded controls."""
-    devices = {237: {"entities": {}}, 172: {"entities": {}}, 182: {"entities": {}}}
+    devices: dict = {
+        237: {"entities": {}},
+        172: {"entities": {}},
+        182: {"entities": {}},
+    }
     register_local_entities(devices)
     entries = {
         k: v for k, v in devices[237]["entities"].items() if k.startswith("purifier_")

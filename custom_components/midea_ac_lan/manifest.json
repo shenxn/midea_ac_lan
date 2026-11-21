@@ -6,15 +6,15 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/wuwentao/midea_ac_lan#readme",
+  "documentation": "https://github.com/shenxn/midea_ac_lan#readme",
   "integration_type": "device",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/wuwentao/midea_ac_lan/issues",
+  "issue_tracker": "https://github.com/shenxn/midea_ac_lan/issues",
   "loggers": [
     "midealan"
   ],
   "requirements": [
-    "midea-lan==2026.10.0"
+    "midea-lan==2026.11.0"
   ],
-  "version": "2026.10.0"
+  "version": "2026.11.0+shenxn.1"
 }

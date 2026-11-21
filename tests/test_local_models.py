@@ -1,7 +1,7 @@
 """Offline model, safety, state mapping and optional packet regressions."""
 
 # Byte offsets and literals are the protocol evidence these tests assert.
-# ruff: file-ignore[magic-value-comparison, any-type, pytest-raises-too-broad, import-outside-top-level, too-many-arguments, too-many-positional-arguments]
+# ruff: file-ignore[any-type, pytest-raises-too-broad, import-outside-top-level]
 
 import importlib.util
 import sys
@@ -10,8 +10,9 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan import local_models as models
 from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan import local_models as models
 
 ROOT = Path(__file__).resolve().parents[1]
 Softener845 = models.Softener845
@@ -255,7 +256,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     monkeypatch.setitem(sys.modules, "homeassistant", types.ModuleType("homeassistant"))
     monkeypatch.setitem(sys.modules, "homeassistant.const", fake)
     spec = importlib.util.spec_from_file_location(
-        "midea_ac_lan.local_entities_test",
+        "custom_components.midea_ac_lan.local_entities_test",
         ROOT / "custom_components/midea_ac_lan/local_entities.py",
     )
     assert spec is not None
@@ -263,7 +264,7 @@ def test_model_exclusions_do_not_mutate_shared_lists(
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
     shared: list[tuple[str, int]] = []
-    ds = {
+    ds: dict = {
         182: {"entities": {}},
         172: {"entities": {"climate": {"excluded_devices": shared}}},
         237: {

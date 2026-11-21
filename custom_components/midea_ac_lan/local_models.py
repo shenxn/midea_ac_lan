@@ -260,8 +260,9 @@ class Softener845(VendorMixin, MideaEDDevice):  # type: ignore[misc]
         """Validate a supported setting before sending a local command."""
         attr = str(attr).removeprefix("f08_")
         if attr == "regeneration_time":
-            if not isinstance(value, str):
-                raise ValueError("Time must be HH:MM")
+            if not isinstance(value, str) or value.removeprefix("T").startswith("24"):
+                # Python 3.14 accepts 24:00, but this appliance needs hour 0..23.
+                raise ValueError("Time must be HH:MM with hour 0 through 23")
             selected = time.fromisoformat(value)
             if selected.second or selected.microsecond or selected.tzinfo is not None:
                 raise ValueError("Time must be local whole minutes")

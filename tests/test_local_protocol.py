@@ -1,7 +1,7 @@
 """Golden vectors from a private Lua oracle, exercised with no Lua dependency."""
 
 # Wire values are explicit evidence; tests access state to assert atomic rejection.
-# ruff: file-ignore[magic-value-comparison, any-type, pytest-raises-too-broad]
+# ruff: file-ignore[any-type, pytest-raises-too-broad]
 
 import json
 from pathlib import Path
@@ -9,13 +9,19 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan.local_models import (
+from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.local_models import (
     FreshAir24297131,
     PipeDispenser1046,
     Softener845,
 )
-from midea_ac_lan.local_protocol import ModelCodec, ac_envelope, crc8, frame
-from midealan.const import ProtocolVersion
+from custom_components.midea_ac_lan.local_protocol import (
+    ModelCodec,
+    ac_envelope,
+    crc8,
+    frame,
+)
 
 VECTORS = json.loads(
     (Path(__file__).parent / "fixtures/local_protocol.json").read_text(),

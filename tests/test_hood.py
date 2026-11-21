@@ -1,14 +1,15 @@
 """Independent codec parity and model isolation for the J37 hood."""
 
-# ruff: file-ignore[magic-value-comparison, pytest-raises-too-broad]
+# ruff: file-ignore[pytest-raises-too-broad]
 import json
 from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan.hood_model import Hood730007C9, device_selector
-from midea_ac_lan.hood_protocol import hood_control, hood_status
 from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.hood_model import Hood730007C9, device_selector
+from custom_components.midea_ac_lan.hood_protocol import hood_control, hood_status
 
 VECTORS = json.loads(
     (Path(__file__).parent / "fixtures/hood_730007c9.json").read_text(),
@@ -54,7 +55,7 @@ def test_scope_and_confirmed_state() -> None:
     d = device_selector(**args)
     assert isinstance(d, Hood730007C9)
     assert d.preset_modes == ["off", "level_1", "level_2", "level_3", "level_4"]
-    d.build_send = Mock()
+    d.build_send = Mock()  # type: ignore[method-assign]
     with pytest.raises(ValueError):
         d.set_attribute("hood_gesture", False)
     d.process_message(bytes.fromhex(VECTORS["decode"][0]["hex"]))

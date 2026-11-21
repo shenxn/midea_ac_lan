@@ -1,6 +1,6 @@
 """Model-specific settings checked against independent vendor wire vectors."""
 
-# ruff: file-ignore[magic-value-comparison, any-type, pytest-raises-too-broad]
+# ruff: file-ignore[any-type, pytest-raises-too-broad]
 
 import hashlib
 import json
@@ -10,10 +10,11 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan.local_models import Softener845
-from midea_ac_lan.local_protocol import ModelCodec, frame
-from midea_ac_lan.time import MideaTime
 from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.local_models import Softener845
+from custom_components.midea_ac_lan.local_protocol import ModelCodec, frame
+from custom_components.midea_ac_lan.time import MideaTime
 
 VECTORS = json.loads(
     (Path(__file__).parent / "fixtures/softener_extensions.json").read_text(),
@@ -135,6 +136,7 @@ def test_partial_protection_reports_and_missing_data(device: Any) -> None:
     ("attribute", "value"),
     [
         ("regeneration_time", "24:00"),
+        ("regeneration_time", "T24:00"),
         ("regeneration_time", "12:00:01"),
         ("regeneration_time", "12:00+08:00"),
         ("regeneration_time", 123),

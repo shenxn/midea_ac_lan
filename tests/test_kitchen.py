@@ -6,14 +6,19 @@ from typing import Any
 from unittest.mock import Mock
 
 import pytest
-from midea_ac_lan.kitchen_protocol import kitchen_control, kitchen_query, kitchen_status
-from midea_ac_lan.local_models import Kitchen22397091
 from midealan.const import ProtocolVersion
 from midealan.devices.ac.message import (
     SubProtocolQuery10,
     SubProtocolQuery11,
     SubProtocolQuery30,
 )
+
+from custom_components.midea_ac_lan.kitchen_protocol import (
+    kitchen_control,
+    kitchen_query,
+    kitchen_status,
+)
+from custom_components.midea_ac_lan.local_models import Kitchen22397091
 
 VECTORS = json.loads((Path(__file__).parent / "fixtures/kitchen.json").read_text())
 

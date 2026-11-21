@@ -5,6 +5,7 @@ import inspect
 from typing import Any
 
 from midealan.device import MideaDevice
+from midealan.devices import device_selector as upstream_selector
 from midealan.devices.b6 import MideaB6Device
 
 from .hood_protocol import hood_control, hood_status
@@ -49,14 +50,12 @@ class Hood730007C9(MideaB6Device):
         packet = hood_control(name, value)
         if name not in self._hood_reported:
             raise ValueError("Wait for the hood to report this setting")
-        self.build_send(PurifierFrame(packet))
+        self.build_send(PurifierFrame(packet))  # type: ignore[arg-type]
         self.build_send(self.build_query()[0])
 
 
 def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:
     """Minimal deployment hook preserving the purifier and other appliances."""
-    from midealan.devices import device_selector as upstream_selector  # ruff: ignore[import-outside-top-level]
-
     bound = inspect.signature(upstream_selector).bind(*args, **kwargs)
     bound.apply_defaults()
     values = dict(bound.arguments)

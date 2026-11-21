@@ -74,9 +74,9 @@ class Purifier632009CN(MideaEDDevice):
         packet = purifier_control(name, value)
         if name not in self._purifier_reported:
             raise ValueError("Wait for the appliance to report this setting")
-        self.build_send(PurifierFrame(packet))
+        self.build_send(PurifierFrame(packet))  # type: ignore[arg-type]
         # A query, rather than an optimistic assignment, confirms device state.
-        self.build_send(self.build_query()[0])
+        self.build_send(self.build_query()[0])  # type: ignore[arg-type]
 
 
 def device_selector(*args: Any, **kwargs: Any) -> MideaDevice | None:

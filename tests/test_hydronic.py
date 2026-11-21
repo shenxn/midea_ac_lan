@@ -1,6 +1,6 @@
 """Independent control vectors and isolation of the shared water module."""
 
-# ruff: file-ignore[magic-value-comparison, any-type]
+# ruff: file-ignore[any-type]
 
 import json
 from pathlib import Path
@@ -9,15 +9,16 @@ from unittest.mock import Mock
 
 import pytest
 from homeassistant.components.climate import HVACMode
-from midea_ac_lan.hydronic_climate import MideaHydronicClimate
-from midea_ac_lan.hydronic_protocol import (
+from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.hydronic_climate import MideaHydronicClimate
+from custom_components.midea_ac_lan.hydronic_protocol import (
     hydronic_control,
     hydronic_query,
     hydronic_status,
 )
-from midea_ac_lan.local_models import Kitchen22397091
-from midea_ac_lan.local_protocol import ac_envelope, frame
-from midealan.const import ProtocolVersion
+from custom_components.midea_ac_lan.local_models import Kitchen22397091
+from custom_components.midea_ac_lan.local_protocol import ac_envelope, frame
 
 VECTORS = json.loads((Path(__file__).parent / "fixtures/hydronic.json").read_text())
 

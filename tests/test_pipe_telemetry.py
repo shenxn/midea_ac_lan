@@ -5,9 +5,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from midea_ac_lan.local_models import PipeDispenser1046
-from midea_ac_lan.local_protocol import ModelCodec
 from midealan.const import ProtocolVersion
+
+from custom_components.midea_ac_lan.local_models import PipeDispenser1046
+from custom_components.midea_ac_lan.local_protocol import ModelCodec
 
 VECTORS = json.loads(
     (Path(__file__).parent / "fixtures/pipe_telemetry.json").read_text(),
