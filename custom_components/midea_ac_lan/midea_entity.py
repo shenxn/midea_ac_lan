@@ -13,7 +13,7 @@ else:
         DeviceInfo,
     )
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, format_mac
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity import Entity, EntityCategory
 from midealan.device import MideaDevice
 
 from .const import DOMAIN
@@ -107,7 +107,7 @@ class MideaEntity(Entity):
         #   users can still opt in from the entity registry.
         entity_category = self._config.get("entity_category")
         if entity_category is not None:
-            self._attr_entity_category = entity_category
+            self._attr_entity_category = EntityCategory(entity_category)
         registry_enabled_default = self._config.get(
             "entity_registry_enabled_default",
         )

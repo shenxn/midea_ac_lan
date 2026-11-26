@@ -19,6 +19,10 @@ from midealan.devices import device_selector as upstream_selector
 from midealan.devices.ac import MideaACDevice
 from midealan.devices.ed import MideaEDDevice
 
+from .fresh_air_protocol import (
+    FRESH_AIR_ENGINEERING_KEYS,
+    fresh_air_engineering_status,
+)
 from .hood_model import Hood730007C9
 from .hydronic_protocol import FLAGS, hydronic_control, hydronic_query, hydronic_status
 from .kitchen_protocol import (
@@ -331,9 +335,20 @@ class FreshAir24297131(VendorMixin, MideaACDevice):  # type: ignore[misc]
                     "fresh_filter_time",
                     "fresh_filter_remaining",
                     "ventilation_preset",
+                    *FRESH_AIR_ENGINEERING_KEYS,
                 ],
             ),
         )
+
+    def process_message(self, msg: bytes) -> dict[str, Any]:
+        """Decode general/C003 status and read-only 0x10 engineering telemetry."""
+        with self._vendor_lock:
+            parsed = super().process_message(msg)
+            engineering = fresh_air_engineering_status(msg)
+            if engineering:
+                self._attributes.update(engineering)
+                parsed = {**parsed, **engineering}
+            return parsed
 
     @property
     def fresh_air_fan_speeds(self) -> list[str]:

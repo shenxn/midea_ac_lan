@@ -144,6 +144,29 @@ def register_local_entities(devices: dict[int, Any]) -> None:
         "default": True,
         "options": {1: "热交换", 7: "强劲", 8: "度假", 4: "自动"},
     }
+    for key, name, unit, state_class in [
+        ("fresh_air_intake_actual_level", "送风实际运行挡位", "%", "measurement"),
+        ("fresh_air_exhaust_actual_level", "排风实际运行挡位", "%", "measurement"),
+        ("fresh_air_intake_fan_rpm_raw", "送风风机转速原始值", None, "measurement"),
+        ("fresh_air_exhaust_fan_rpm_raw", "排风风机转速原始值", None, "measurement"),
+        ("fresh_air_operating_mode", "实际运行模式代码", None, None),
+        ("fresh_air_fault", "新风故障状态", None, None),
+        ("fresh_air_protection", "新风保护状态", None, None),
+    ]:
+        config = {
+            "type": Platform.SENSOR,
+            "name": name,
+            "models": ["24297131"],
+            "subtypes": [1],
+            "required_attribute": key,
+            "default": True,
+            "entity_category": "diagnostic",
+        }
+        if unit is not None:
+            config["unit"] = unit
+        if state_class is not None:
+            config["state_class"] = state_class
+        ac[key] = config
 
     pipe = devices[237]["entities"]
     common = {"models": ["6320088A"], "subtypes": [1046], "default": True}
