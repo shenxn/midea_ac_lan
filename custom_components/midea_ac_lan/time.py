@@ -76,7 +76,7 @@ async def async_setup_entry(
         if (
             config["type"] == Platform.TIME
             and supports_device(device.model, device.subtype, config)
-            and entity_key in extra_switches
+            and (config.get("default") or entity_key in extra_switches)
         ):
             required_attribute = config.get("required_attribute")
             if (

@@ -205,6 +205,7 @@ async def test_async_setup_entry_filters_times(
         {
             "selected": {"type": Platform.TIME},
             "not_selected": {"type": Platform.TIME},
+            "default_time": {"type": Platform.TIME, "default": True},
             "missing": {
                 "type": Platform.TIME,
                 "required_attribute": "capability",
@@ -221,7 +222,10 @@ async def test_async_setup_entry_filters_times(
         switches=["selected", "missing", "unsupported"],
     )
     await async_setup_entry(hass, entry, add_entities)
-    assert [item._entity_key for item in add_entities.call_args.args[0]] == ["selected"]
+    assert [item._entity_key for item in add_entities.call_args.args[0]] == [
+        "selected",
+        "default_time",
+    ]
 
 
 @pytest.mark.parametrize(

@@ -4,12 +4,14 @@ from typing import Any
 
 from homeassistant.const import Platform
 
+from .fridge_entities import register_fridge_entities
 from .hood_entities import register_hood_entities
 from .purifier_entities import register_purifier_entities
 
 
 def register_local_entities(devices: dict[int, Any]) -> None:
     """Register exact-model metadata without mutating shared exclusion lists."""
+    register_fridge_entities(devices.get(202, {"entities": {}})["entities"])
     register_hood_entities(devices[182]["entities"])
     soft = devices[237]["entities"]
     register_purifier_entities(soft)

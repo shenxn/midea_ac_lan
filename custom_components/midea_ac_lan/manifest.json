@@ -15,7 +15,7 @@
     "midealan"
   ],
   "requirements": [
-    "midea-lan==2026.11.0"
+    "midea-lan @ file:///config/custom_components/midea_ac_lan/wheels/midea_lan-2026.11.0+shenxn.axfs.1-py3-none-any.whl"
   ],
-  "version": "2026.11.0+shenxn.4"
+  "version": "2026.11.0+shenxn.5"
 }
