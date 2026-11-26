@@ -1,12 +1,105 @@
 """Exact-model BLE addresses, query codecs, and reversible settings."""
 
 # BLE state and catalog mappings contain heterogeneous protocol values.
-# ruff: file-ignore[any-type, docstring-missing-returns, docstring-missing-exception, magic-value-comparison, too-many-boolean-expressions]
+# ruff: file-ignore[any-type, docstring-missing-returns, docstring-missing-exception, magic-value-comparison, too-many-boolean-expressions, ambiguous-unicode-character-string]
 from dataclasses import dataclass
 from typing import Any
 
 from . import dishwasher, purifier
 from .protocol import signed
+
+RATED_LITRE = {
+    0: 6,
+    4: 8,
+    8: 10,
+    12: 12,
+    16: 14,
+    24: 20,
+    28: 13,
+    32: 15,
+    36: 18,
+    40: 11,
+    44: 17,
+}
+HEATER_ERRORS = (
+    (13, 0, "E0"),
+    (13, 1, "E1"),
+    (13, 2, "E2"),
+    (13, 3, "E3"),
+    (13, 4, "E4"),
+    (13, 5, "E5"),
+    (13, 6, "E6"),
+    (13, 7, "E8"),
+    (14, 0, "EA"),
+    (14, 1, "EE"),
+    (37, 0, "F2"),
+    (37, 1, "C0"),
+    (37, 2, "C1"),
+    (37, 3, "C2"),
+    (37, 4, "C3"),
+    (37, 5, "C4"),
+    (37, 6, "C5"),
+    (37, 7, "C6"),
+    (38, 0, "C7"),
+    (38, 1, "C8"),
+    (38, 2, "EH"),
+    (38, 7, "EF"),
+    (48, 2, "CE"),
+)
+
+
+def _heater_error(b: bytes) -> str:
+    """Decode the active E3 fault code from status payload bytes."""
+    for index, bit, code in HEATER_ERRORS:
+        if len(b) > index and b[index] & (1 << bit):
+            return code
+    return "无故障"
+
+
+def _parse_heater(raw: bytes) -> dict[str, Any]:
+    """Decode exact-model 5111102Z gas water heater telemetry."""
+    b = raw[:-1]
+    power = bool(b[12] & 1)
+    burning = bool(b[12] & 2)
+    rated_litre = RATED_LITRE.get(b[25] & 0xFC, 16)
+    error_code = _heater_error(b)
+    water_volume = b[17]
+    zero_cold_active = bool(b[31] & 0x0E)
+    if error_code != "无故障":
+        work_status = "有故障"
+    elif not power:
+        work_status = "已关机"
+    elif burning and zero_cold_active:
+        work_status = "零冷水·加热中"
+    elif not burning and zero_cold_active:
+        work_status = "零冷水·保温中"
+    elif burning and water_volume > 27:
+        work_status = "加热中"
+    else:
+        work_status = "待机中"
+    state: dict[str, Any] = {
+        "power": power,
+        "burning": burning,
+        "temperature": b[16],
+        "outlet": b[15],
+        "beep": bool(b[38] & 16),
+        "work_status": work_status,
+        "inlet": b[36],
+        "return_water": b[24],
+        "water_flow": round(water_volume / 10, 1),
+        "gas_lift_percent": (
+            min(100, int(b[28] / rated_litre * 100)) if burning else 0
+        ),
+        "change_litre": b[28] if (b[30] & 2) and burning else rated_litre,
+        "error_code": error_code,
+    }
+    if len(b) > 44:
+        state["cold_conservation_duration"] = round(b[44] / 10, 1)
+    if len(b) > 50:
+        state["new_filter_problem"] = bool(b[50] & 8)
+        state["cruise_antifreeze"] = not bool(b[50] & 1)
+        state["cruise_antifreeze_error"] = bool(b[50] & 2)
+    return state
 
 
 @dataclass(frozen=True)
@@ -61,13 +154,7 @@ def parse(device: Any, raw: bytes) -> Any:
     if device == PURIFIER:
         return purifier.parse_body(raw[10:-1])
     if device == HEATER and raw[10:12] == b"\x01\x01" and len(raw) >= 40:
-        return {
-            "power": bool(raw[12] & 1),
-            "burning": bool(raw[12] & 2),
-            "temperature": raw[16],
-            "outlet": raw[15],
-            "beep": bool(raw[38] & 16),
-        }
+        return _parse_heater(raw)
     if device == HOOD and raw[8] == 2:
         pos = 11
         while pos + 2 <= len(raw) - 1:

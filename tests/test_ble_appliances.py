@@ -133,3 +133,60 @@ def test_appliance_status_formats_and_idle_guards() -> None:
             purifier.parse_body(body)
     full = b"\xff\x01\x03\x00\x40" + bytes(4) + b"\x3c\x30" + bytes(3)
     assert purifier.parse_body(full)["controls"]["antifreeze"] == "off"
+
+
+def test_heater_extended_telemetry_and_errors() -> None:
+    """Verify 5111102Z heater telemetry, work status, and fault codes."""
+    from custom_components.midea_ac_lan.ble.appliances import HEATER_ERRORS, parse
+    from custom_components.midea_ac_lan.ble.protocol import signed
+
+    def make_heater_frame(body: bytearray) -> bytes:
+        return b"\xaa" + signed(
+            bytes([len(body) + 10, HEATER.kind, 0, 0, 0, 0, 0, 0, 3]) + body,
+        )
+
+    body = bytearray(42)
+    body[:2] = b"\x01\x01"
+    body[2] = 0x03  # power + burning
+    body[5] = 43  # outlet
+    body[6] = 42  # target temperature
+    body[7] = 52  # water_volume -> 5.2 L/min
+    body[14] = 35  # return_water
+    body[15] = 0x14  # rated_litre default 16
+    body[18] = 8  # gas lift -> 50%
+    body[20] = 0x02  # change_litre_switch on
+    body[26] = 22  # inlet
+    body[34] = 30  # cold_conservation_duration -> 3.0 min
+    body[40] = 0x08  # new_filter_problem=True, cruise_antifreeze=True, error=False
+    state = parse(HEATER, make_heater_frame(body))
+    assert state["work_status"] == "加热中"
+    assert state["inlet"] == 22
+    assert state["return_water"] == 35
+    assert state["water_flow"] == 5.2
+    assert state["gas_lift_percent"] == 50
+    assert state["change_litre"] == 8
+    assert state["cold_conservation_duration"] == 3.0
+    assert state["error_code"] == "无故障"
+    assert state["new_filter_problem"] is True
+    assert state["cruise_antifreeze"] is True
+    assert state["cruise_antifreeze_error"] is False
+
+    # Zero-cold heating & holding & standby & powered off
+    body[21] = 0x02  # zero_single
+    assert parse(HEATER, make_heater_frame(body))["work_status"] == "零冷水·加热中"
+    body[2] = 0x01  # power on, not burning
+    assert parse(HEATER, make_heater_frame(body))["work_status"] == "零冷水·保温中"
+    body[21] = 0x00
+    assert parse(HEATER, make_heater_frame(body))["work_status"] == "待机中"
+    assert parse(HEATER, make_heater_frame(body))["change_litre"] == 16
+    body[2] = 0x00
+    assert parse(HEATER, make_heater_frame(body))["work_status"] == "已关机"
+
+    # All 23 fault codes
+    for raw_index, bit, expected in HEATER_ERRORS:
+        err_body = bytearray(42)
+        err_body[:2] = b"\x01\x01"
+        err_body[raw_index - 10] = 1 << bit
+        err_state = parse(HEATER, make_heater_frame(err_body))
+        assert err_state["error_code"] == expected
+        assert err_state["work_status"] == "有故障"

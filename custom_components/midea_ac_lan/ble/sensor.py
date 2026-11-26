@@ -22,6 +22,18 @@ SENSORS = {
     "rinse_level": ("亮碟剂档位", None),
     "humidity": ("湿度", "%"),
 }
+HEATER_SENSORS: dict[str, tuple[str, str | None]] = {
+    "temperature": ("设定温度", "°C"),
+    "outlet": ("出水温度", "°C"),
+    "work_status": ("运行状态", None),
+    "inlet": ("进水温度", "°C"),
+    "return_water": ("回水温度", "°C"),
+    "water_flow": ("实时水流量", "L/min"),
+    "gas_lift_percent": ("实时火力", "%"),
+    "change_litre": ("当前升数", "L"),
+    "cold_conservation_duration": ("零冷水节能时长", "min"),
+    "error_code": ("故障代码", None),
+}
 STATUS = {0: "待机", 1: "取消", 2: "预约", 3: "洗涤中", 4: "故障", 6: "管路检查"}
 
 
@@ -42,9 +54,7 @@ async def async_setup_entry(_hass: Any, entry: Any, async_add_entities: Any) -> 
     """Create the model-specific Bluetooth entities."""
     profile = entry.runtime_data.profile
     fields: dict[str, tuple[str, str | None]] = (
-        {"gear": ("风机档位", None)}
-        if profile == HOOD
-        else {"temperature": ("设定温度", "°C"), "outlet": ("出水温度", "°C")}
+        {"gear": ("风机档位", None)} if profile == HOOD else HEATER_SENSORS
     )
     if profile == DISH:
         fields = SENSORS

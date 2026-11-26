@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 
 from custom_components.midea_ac_lan.ble import client, protocol
-from custom_components.midea_ac_lan.ble.appliances import DISH, HOOD, PURIFIER
+from custom_components.midea_ac_lan.ble.appliances import DISH, HEATER, HOOD, PURIFIER
 
 ADDRESS = "02:00:00:00:00:01"
 
@@ -184,6 +184,21 @@ async def test_control_queries_before_and_after_single_write() -> None:
     assert await hood.set_option("control_left_stove_off", "press") == {
         "controls": {"left_stove_off": "off"},
     }
+    heater = make_link(HEATER)
+    heater.send = AsyncMock()
+    heater.session.request = Mock(return_value=b"command")
+    heater.query = AsyncMock(return_value={"controls": {}})
+    with pytest.raises(ValueError, match="Filter"):
+        await heater.set_option("control_new_filter_reset", "press")
+    normal = {"controls": {"new_filter_reset": "normal"}}
+    heater.query = AsyncMock(return_value=normal)
+    with patch.object(
+        client,
+        "asyncio",
+        SimpleNamespace(timeout=client.asyncio.timeout, sleep=AsyncMock()),
+    ):
+        assert await heater.set_option("control_new_filter_reset", "press") == normal
+    heater.send.assert_awaited_once()
 
 
 async def test_isolated_setting_retries_only_while_idle() -> None:

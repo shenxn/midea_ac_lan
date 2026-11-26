@@ -118,7 +118,12 @@ class Link:
                 "working",
             }:
                 raise ValueError("Burner has not reported state")
-            if matches(field, value, observed):
+            if field == "new_filter_reset" and observed.get(field) not in {
+                "normal",
+                "abnormal",
+            }:
+                raise ValueError("Filter status has not been reported")
+            if field != "new_filter_reset" and matches(field, value, observed):
                 return state
             await self.send(self.session.request(frame))
             # One write only. Poll until the appliance confirms the desired state.

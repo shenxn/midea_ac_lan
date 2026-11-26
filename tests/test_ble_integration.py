@@ -233,6 +233,8 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
     assert button.available
     await button.async_press()
     thermostat = ce.Thermostat(coord, "water_heater", group(HEATER)["water_heater"])
+    assert thermostat.min_temp == 32
+    assert thermostat.max_temp == 65
     assert thermostat.hvac_mode == HVACMode.HEAT
     assert thermostat.native_target_temperature == 42
     assert thermostat.native_current_temperature == 40
@@ -243,6 +245,33 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
         await thermostat.async_set_hvac_mode(HVACMode.COOL)
     with pytest.raises(ValueError, match="whole"):
         await thermostat.async_set_temperature(temperature=42.5)
+    hold = ce.Brightness(
+        coord,
+        "cold_hold_duration",
+        group(HEATER)["cold_hold_duration"],
+    )
+    assert (hold.native_min_value, hold.native_max_value, hold.native_step) == (
+        0.5,
+        25.0,
+        0.1,
+    )
+    assert hold.native_unit_of_measurement == "min"
+    coord.data["controls"]["cold_hold_duration"] = "30"
+    assert hold.native_value == 3.0
+    await hold.async_set_native_value(3.5)
+    coord.write.assert_awaited_with("control_cold_hold_duration", "35")
+    with pytest.raises(ValueError, match="Integer"):
+        await hold.async_set_native_value(3.15)
+    reset = ce.BurnerOff(
+        coord,
+        "new_filter_reset",
+        group(HEATER)["new_filter_reset"],
+    )
+    assert not reset.available
+    coord.data["controls"]["new_filter_reset"] = "normal"
+    assert reset.available
+    await reset.async_press()
+    coord.write.assert_awaited_with("control_new_filter_reset", "press")
     coord.data = {"controls": {"power": "off", "sleep": "off"}}
     assert thermostat.hvac_mode == HVACMode.OFF
     assert toggle.is_on is False

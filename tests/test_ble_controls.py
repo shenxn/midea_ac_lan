@@ -10,15 +10,69 @@ from custom_components.midea_ac_lan.ble.appliances import DISH, HEATER, HOOD
 from custom_components.midea_ac_lan.ble.controls import command, group, matches
 
 
-def test_personal_mode_carries_latest_temperature() -> None:
-    """Verify personal mode carries latest temperature."""
-    assert command(HEATER, "person_mode_two", "on", {"person_tem_two": 43})[
+def test_heater_catalog_matches_exact_model_and_companion_duration() -> None:
+    """Verify 5111102Z heater controls match the App and carry hold duration."""
+    heater = group(HEATER)
+    for removed in (
+        "cold_water_ai",
+        "cold_water",
+        "bubble",
+        "bathtub",
+        "safe",
+        "change_litre_switch",
+        "person_mode_one",
+        "person_mode_two",
+        "person_mode_three",
+        "high_temp_lock",
+    ):
+        assert removed not in heater
+    assert heater["cold_water_master"]["name"] == "单次零冷水"
+    assert heater["cold_water_pressure"]["name"] == "瀑布畅洗"
+    assert list(heater["mode"]["commands"]) == ["标准洗", "婴儿浴", "ECO"]
+    assert command(HEATER, "mode", "标准洗", {})[10:13] == bytes.fromhex("140202")
+    assert command(HEATER, "mode", "婴儿浴", {})[10:14] == bytes.fromhex("14020020")
+    assert command(HEATER, "mode", "ECO", {})[10:14] == bytes.fromhex("14020002")
+    assert command(HEATER, "water_heater", "32", {})[10:13] == bytes.fromhex("140820")
+    assert command(HEATER, "water_heater", "65", {})[10:13] == bytes.fromhex("140841")
+    for invalid_temp in ("20", "31", "66"):
+        with pytest.raises(ValueError, match="Unsupported"):
+            command(HEATER, "water_heater", invalid_temp, {})
+    assert command(HEATER, "cold_water_conservation", "节能零冷水", {})[
         10:14
-    ] == bytes.fromhex("140c012b")
-    with pytest.raises(ValueError, match="companion"):
-        command(HEATER, "bathtub", "on", {})
-    with pytest.raises(ValueError, match="companion"):
-        command(HEATER, "bathtub", "on", {"bathtub_water_level": 300})
+    ] == bytes.fromhex("14160100")
+    assert command(
+        HEATER,
+        "cold_water_conservation",
+        "保温零冷水",
+        {"cold_hold_duration": "30"},
+    )[10:14] == bytes.fromhex("1416001e")
+    for bad_obs in ({}, {"cold_hold_duration": "4"}, {"cold_hold_duration": "251"}):
+        with pytest.raises(ValueError, match="companion"):
+            command(HEATER, "cold_water_conservation", "保温零冷水", bad_obs)
+    assert command(HEATER, "cold_hold_duration", "5", {})[10:14] == bytes.fromhex(
+        "14160005",
+    )
+    assert command(HEATER, "cold_hold_duration", "250", {})[10:14] == bytes.fromhex(
+        "141600fa",
+    )
+    for bad_dur in ("4", "251"):
+        with pytest.raises(ValueError, match="Unsupported"):
+            command(HEATER, "cold_hold_duration", bad_dur, {})
+    assert command(HEATER, "new_filter_reset", "press", {})[10:13] == bytes.fromhex(
+        "142901",
+    )
+    assert matches(
+        "cold_hold_duration",
+        "30",
+        {"cold_hold_duration": "30", "cold_water_conservation": "保温零冷水"},
+    )
+    assert not matches(
+        "cold_hold_duration",
+        "30",
+        {"cold_hold_duration": "30", "cold_water_conservation": "节能零冷水"},
+    )
+    assert matches("new_filter_reset", "press", {"new_filter_reset": "normal"})
+    assert not matches("new_filter_reset", "press", {"new_filter_reset": "abnormal"})
 
 
 def test_hood_setting_does_not_change_fan() -> None:
@@ -45,7 +99,8 @@ def test_all_catalog_packets_have_exact_size_and_checksum(device: Any) -> None:
     """Verify all catalog packets have exact size and checksum."""
     for key, spec in group(device).items():
         for opt in spec["commands"]:
-            observed = {spec["include"][0]: 45} if spec.get("include") else {}
+            dep = spec.get("include") or spec.get("include_for", {}).get(opt)
+            observed = {dep[0]: 45} if dep else {}
             frame = command(device, key, opt, observed)
             assert frame[9] == 2
             assert frame[2] == device.kind
@@ -91,17 +146,30 @@ def test_readback_status_fields_and_matching() -> None:
         DISH,
         report(DISH, bytes(39)),
     )
-    for size in (22, 25, 30):
+    for size in (22, 30, 42):
         body = bytearray(size)
-        for offset in (2, 16):
-            for flag in (0, 1, 2, 4, 8, 16, 32, 64, 128):
-                body[offset] = flag
-                values = status_fields(HEATER, report(HEATER, body))
-                assert "water_heater" in values
+        body[6] = 42
+        body[2] = 8
+        values = status_fields(HEATER, report(HEATER, body))
+        assert values["water_heater"] == "42"
+        assert values["mode"] == "标准洗"
         body[2] = 0
-        for flag in (1, 2, 4, 8, 16, 32, 64):
+        for flag, expected in ((1, "ECO"), (16, "婴儿浴")):
             body[16] = flag
-            assert "mode" in status_fields(HEATER, report(HEATER, body))
+            assert status_fields(HEATER, report(HEATER, body))["mode"] == expected
+        if size >= 42:
+            body[28] = 64
+            body[30] = 30
+            body[40] = 8
+            values = status_fields(HEATER, report(HEATER, body))
+            assert values["cold_water_conservation"] == "节能零冷水"
+            assert values["cold_hold_duration"] == "30"
+            assert values["new_filter_reset"] == "abnormal"
+            body[28] = 0
+            body[40] = 0
+            values = status_fields(HEATER, report(HEATER, body))
+            assert values["cold_water_conservation"] == "保温零冷水"
+            assert values["new_filter_reset"] == "normal"
     for mode in range(6):
         for kind in (1, 2, 3):
             values = status_fields(

@@ -40,10 +40,12 @@ class Control(ApplianceEntity):
 
     @property
     def available(self) -> bool:
-        """Require a successful update and known state for burner buttons."""
+        """Require a successful update and known state for stateful buttons."""
         if not super().available:
             return False
         if self.spec["platform"] == "button":
+            if self.field == "new_filter_reset":
+                return self.observed.get(self.field) in {"normal", "abnormal"}
             return self.observed.get(self.field) in {"off", "working"}
         return True
 
@@ -90,12 +92,16 @@ class Choice(Control, SelectEntity):
 
 
 class Brightness(Control, NumberEntity):
-    """Brightness interface for exact-model Bluetooth appliances."""
+    """Numeric control interface for exact-model Bluetooth appliances."""
 
-    _attr_native_min_value = 10
-    _attr_native_max_value = 100
-    _attr_native_step = 5
-    _attr_native_unit_of_measurement = "%"
+    def __init__(self, coordinator: Any, key: str, spec: Any) -> None:
+        """Initialize range, step, unit, and optional fixed-point scale."""
+        super().__init__(coordinator, key, spec)
+        self._scale = spec.get("scale", 1)
+        self._attr_native_min_value = spec.get("min", 10)
+        self._attr_native_max_value = spec.get("max", 100)
+        self._attr_native_step = spec.get("step", 5)
+        self._attr_native_unit_of_measurement = spec.get("unit", "%")
 
     @property
     def value(self) -> Any:
@@ -104,15 +110,19 @@ class Brightness(Control, NumberEntity):
 
     @property
     def native_value(self) -> Any:
-        """The reported native sensor value."""
+        """The reported native numeric value."""
         v = self.observed.get(self.field)
-        return int(v) if v is not None else None
+        if v is None:
+            return None
+        raw = int(v)
+        return round(raw / self._scale, 1) if self._scale != 1 else raw
 
     async def async_set_native_value(self, value: Any) -> None:
         """Apply async set native value."""
-        if not float(value).is_integer():
-            raise ValueError("Integer brightness required")
-        await self.apply(str(int(value)))
+        scaled = round(float(value) * self._scale, 6)
+        if not scaled.is_integer():
+            raise ValueError("Integer step value required")
+        await self.apply(str(int(scaled)))
 
 
 class BurnerOff(Control, ButtonEntity):
@@ -127,8 +137,8 @@ class Thermostat(NativeTemperatureCompat, Control, ClimateEntity):
     """Thermostat interface for exact-model Bluetooth appliances."""
 
     _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
-    _attr_min_temp = 20
-    _attr_max_temp = 60
+    _attr_min_temp = 32
+    _attr_max_temp = 65
     _attr_target_temperature_step = 1
     _attr_hvac_modes: ClassVar = [HVACMode.OFF, HVACMode.HEAT]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE

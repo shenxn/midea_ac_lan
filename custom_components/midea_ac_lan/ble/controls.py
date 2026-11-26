@@ -84,48 +84,30 @@ def status_fields(device: Any, raw: bytes) -> Any:  # ruff: ignore[complex-struc
         b = raw[:-1]
         heater_flags = {
             "power": (12, 0),
-            "cold_water": (12, 2),
-            "bathtub": (12, 6),
-            "safe": (18, 3),
             "cold_water_master": (30, 7),
             "cold_water_dot": (30, 0),
-            "change_litre_switch": (30, 1),
-            "cold_water_ai": (31, 5),
             "cold_water_pressure": (30, 2),
-            "person_mode_one": (30, 3),
-            "person_mode_two": (30, 4),
-            "person_mode_three": (30, 5),
-            "high_temp_lock": (31, 6),
         }
         result = {
             k: ("on" if b[i] & (1 << n) else "off")
             for k, (i, n) in heater_flags.items()
             if len(b) > i
         }
-        result.update(water_heater=str(b[16]), bathtub_water_level=b[20] * 256 + b[19])
-        for k, i in {
-            "person_tem_one": 32,
-            "person_tem_two": 33,
-            "person_tem_three": 39,
-        }.items():
-            if len(b) > i:
-                result[k] = b[i]
-        if len(b) > 34:
-            result["bubble"] = "on" if b[34] & 192 else "off"
+        result["water_heater"] = str(b[16])
+        if len(b) > 38:
+            result["cold_water_conservation"] = (
+                "节能零冷水" if b[38] & 64 else "保温零冷水"
+            )
+        if len(b) > 40:
+            result["cold_hold_duration"] = str(b[40])
+        if len(b) > 50:
+            result["new_filter_reset"] = "abnormal" if b[50] & 8 else "normal"
         for i, bit, mode in [
-            (12, 3, "shower"),
-            (12, 4, "kitchen"),
-            (12, 5, "thalposis"),
-            (12, 7, "intelligence"),
-            (26, 0, "eco"),
-            (26, 1, "unfreeze"),
-            (26, 2, "wash_bowl"),
-            (26, 3, "high_temperature"),
-            (26, 4, "baby"),
-            (26, 5, "adult"),
-            (26, 6, "old"),
+            (12, 3, "标准洗"),
+            (26, 4, "婴儿浴"),
+            (26, 0, "ECO"),
         ]:
-            if b[i] & (1 << bit):
+            if len(b) > i and b[i] & (1 << bit):
                 result["mode"] = mode
                 break
         return result
@@ -198,10 +180,13 @@ def command(
     body = bytearray.fromhex(spec["commands"][option])
     if device.kind in {0xE1, 0xE3}:
         body.extend(bytes((38 if device.kind == 0xE1 else 20) - len(body)))
-    if dep := spec.get("include"):
-        name, index = dep
+    if dep := spec.get("include") or spec.get("include_for", {}).get(option):
+        name, index, *bounds = dep
+        low, high = bounds if bounds else (0, 255)
         current = observed.get(name)
-        if type(current) is not int or not 0 <= current <= 255:
+        if isinstance(current, str) and current.isdigit():
+            current = int(current)
+        if type(current) is not int or not low <= current <= high:
             raise ValueError("Required companion setting unavailable")
         body[index] = current
     fields = bytes([len(body) + 10, device.kind, 0, 0, 0, 0, 0, 0, 2]) + body
@@ -219,4 +204,11 @@ def matches(key: str, option: str, observed: dict[str, object]) -> bool:
             return observed.get(key) == "cancel"
     if key.endswith("_stove_off"):
         return observed.get(key) == "off"
+    if key == "cold_hold_duration":
+        return (
+            observed.get(key) == option
+            and observed.get("cold_water_conservation") == "保温零冷水"
+        )
+    if key == "new_filter_reset":
+        return observed.get(key) == "normal"
     return observed.get(key) == option
