@@ -292,3 +292,57 @@ def test_business_request_requires_authenticated_session() -> None:
     session = protocol.Session(HOOD.kind, HOOD.sn8, ADDRESS)
     with pytest.raises(ValueError, match="Missing session key"):
         session.request(HOOD.query)
+
+
+async def test_connect_matches_duplicate_company_id_in_raw_advertisement() -> None:
+    """Match COLMO SN8 from raw AD frames when duplicate 0x06A8 overwrites dict."""
+    sn8_payload = b"\x03" + DISH.sn8 + b"E10087"
+    mac_payload = b"\x03\x1f\x102\x01\x00\x00\x00\x00\x02\x00\x00\x00"
+    raw = (
+        b"\x02\x01\x06"
+        b"\x06\x09COLMO"
+        + bytes([len(sn8_payload) + 3, 0xFF, 0xA8, 0x06])
+        + sn8_payload
+        + b"\x04\xff\x01\x00\x99"
+        + bytes([len(mac_payload) + 3, 0xFF, 0xA8, 0x06])
+        + mac_payload
+        + b"\x00"
+    )
+    info = SimpleNamespace(
+        manufacturer_data={1704: mac_payload},
+        raw=raw,
+        time=100,
+    )
+    device = object()
+    fake = AsyncMock()
+    fake.services = Mock()
+    with (
+        patch.object(
+            client.bluetooth,
+            "async_last_service_info",
+            return_value=info,
+        ),
+        patch.object(
+            client.bluetooth,
+            "async_ble_device_from_address",
+            return_value=device,
+        ),
+        patch.object(client, "monotonic", return_value=100),
+        patch.object(
+            client,
+            "establish_connection",
+            new=AsyncMock(return_value=fake),
+        ),
+        patch.object(client.Link, "handshake", new=AsyncMock()),
+    ):
+        async with client.connect(Mock(), DISH, ADDRESS) as link:
+            assert link.client is fake
+        # Exact-length raw AD frame without trailing zero padding must also match.
+        info.raw = raw[:-1]
+        async with client.connect(Mock(), DISH, ADDRESS) as link:
+            assert link.client is fake
+        # Truncated raw AD frame without a matching payload must still fail.
+        info.raw = b"\x02\x01\x06\x0a\xff\xa8\x06"
+        with pytest.raises(ConnectionError, match="Matching"):
+            async with client.connect(Mock(), DISH, ADDRESS):
+                pytest.fail("Truncated raw frame must not connect")

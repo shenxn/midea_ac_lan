@@ -10,7 +10,7 @@ from typing import Any
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 from homeassistant.components import bluetooth
 
-from .appliances import idle, parse, setting
+from .appliances import idle, match_advertisement, parse, setting
 from .controls import command, matches, status_fields
 from .protocol import NOTIFY, SERVICE, WRITE, Session
 
@@ -175,12 +175,7 @@ async def connect(hass: Any, profile: Any, address: str) -> Any:
         )
 
     device = get_device()
-    if (
-        not device
-        or not info
-        or info.manufacturer_data.get(1704, b"")[1:11]
-        != profile.sn8 + f"{profile.kind:02X}".encode()
-    ):
+    if not device or not info or match_advertisement(info) != profile:
         raise ConnectionError("Matching COLMO advertisement unavailable")
     if monotonic() - info.time > 90:
         raise ConnectionError("Waiting for a new appliance advertisement")

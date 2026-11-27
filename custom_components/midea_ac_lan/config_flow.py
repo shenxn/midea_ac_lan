@@ -266,7 +266,7 @@ class MideaLanConfigFlow(ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
         )
 
         from .ble.appliances import (  # ruff: ignore[import-outside-top-level] - Load Bluetooth only for BLE entries.
-            DEVICES,
+            match_advertisement,
         )
 
         found = {}
@@ -274,9 +274,7 @@ class MideaLanConfigFlow(ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg]
             self.hass,
             connectable=True,
         ):
-            payload = info.manufacturer_data.get(1704, b"")
-            model = DEVICES.get(payload[1:9].decode("ascii", errors="ignore"))
-            if model and payload[9:11] == f"{model.kind:02X}".encode():
+            if model := match_advertisement(info):
                 found[info.address] = model
         if user_input and user_input.get("address") in found:
             address = user_input["address"]

@@ -1,7 +1,7 @@
 """Exact-model BLE addresses, query codecs, and reversible settings."""
 
 # BLE state and catalog mappings contain heterogeneous protocol values.
-# ruff: file-ignore[any-type, docstring-missing-returns, docstring-missing-exception, magic-value-comparison, too-many-boolean-expressions, ambiguous-unicode-character-string]
+# ruff: file-ignore[any-type, docstring-missing-returns, docstring-missing-exception, magic-value-comparison, too-many-boolean-expressions]
 from dataclasses import dataclass
 from typing import Any
 
@@ -136,6 +136,46 @@ PURIFIER = Appliance(
     b"\xaa" + signed(bytes.fromhex("0ced00000000000003ff01")),
 )
 DEVICES = {device.sn8.decode(): device for device in (HOOD, HEATER, DISH, PURIFIER)}
+COLMO_COMPANY_ID = 1704
+_AD_TYPE_MANUFACTURER_DATA = 0xFF
+_MIN_MANUFACTURER_AD_LEN = 3
+
+
+def _manufacturer_payloads(info: Any) -> list[bytes]:
+    """Return COLMO manufacturer payloads from parsed data and raw AD structures."""
+    payloads: list[bytes] = []
+    mdata = getattr(info, "manufacturer_data", None)
+    if mdata and (parsed := mdata.get(COLMO_COMPANY_ID)):
+        payloads.append(parsed)
+    raw = getattr(info, "raw", None)
+    if not isinstance(raw, (bytes, bytearray)):
+        return payloads
+    pos = 0
+    total = len(raw)
+    while pos < total:
+        length = raw[pos]
+        end = pos + 1 + length
+        if length == 0 or end > total:
+            break
+        if (
+            length >= _MIN_MANUFACTURER_AD_LEN
+            and raw[pos + 1] == _AD_TYPE_MANUFACTURER_DATA
+            and int.from_bytes(raw[pos + 2 : pos + 4], "little") == COLMO_COMPANY_ID
+        ):
+            payload = bytes(raw[pos + 4 : end])
+            if payload not in payloads:
+                payloads.append(payload)
+        pos = end
+    return payloads
+
+
+def match_advertisement(info: Any) -> Appliance | None:
+    """Match a Bluetooth service info against supported exact-model COLMO frames."""
+    for payload in _manufacturer_payloads(info):
+        model = DEVICES.get(payload[1:9].decode("ascii", errors="ignore"))
+        if model and payload[9:11] == f"{model.kind:02X}".encode():
+            return model
+    return None
 
 
 def parse(device: Any, raw: bytes) -> Any:
