@@ -190,7 +190,7 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
         last_update_success=True,
         write=AsyncMock(),
     )
-    toggle = ce.Toggle(coord, "sleep", group(PURIFIER)["sleep"])
+    toggle = ce.Toggle(coord, "antifreeze", group(PURIFIER)["antifreeze"])
     assert toggle.is_on is None
     assert toggle.available
     coord.last_update_success = False
@@ -198,11 +198,12 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
     coord.last_update_success = True
     coord.data = {
         "controls": {
-            "sleep": "on",
-            "lock": "off",
+            "antifreeze": "on",
+            "zero_water_mode": "标准模式",
             "lightness": "35",
             "gear": "high",
             "power": "on",
+            "air_set_hour": "12",
         },
         "temperature": 42,
         "outlet": 40,
@@ -211,10 +212,13 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
     assert toggle.is_on is True
     await toggle.async_turn_on()
     await toggle.async_turn_off()
-    lock = ce.PurifierLock(coord, "lock", group(PURIFIER)["lock"])
-    assert lock.is_locked is False
-    await lock.async_lock()
-    await lock.async_unlock()
+    zero_water = ce.Choice(
+        coord,
+        "zero_water_mode",
+        group(PURIFIER)["zero_water_mode"],
+    )
+    assert zero_water.current_option == "标准模式"
+    await zero_water.async_select_option("极致模式")
     oldlock = ce.ChildLock(coord, "cloud_lock", "Lock")
     assert oldlock.is_locked is True
     await oldlock.async_lock()
@@ -227,11 +231,15 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
     await brightness.async_set_native_value(40)
     with pytest.raises(ValueError, match="Integer"):
         await brightness.async_set_native_value(40.5)
-    button = ce.BurnerOff(coord, "left_stove_off", group(HOOD)["left_stove_off"])
-    assert not button.available
-    coord.data["controls"]["left_stove_off"] = "working"
-    assert button.available
-    await button.async_press()
+    air_hour = ce.Brightness(coord, "air_set_hour", group(DISH)["air_set_hour"])
+    assert (
+        air_hour.native_min_value,
+        air_hour.native_max_value,
+        air_hour.native_step,
+    ) == (0, 72, 1)
+    assert air_hour.native_unit_of_measurement == "h"
+    assert air_hour.native_value == 12
+    await air_hour.async_set_native_value(24)
     thermostat = ce.Thermostat(coord, "water_heater", group(HEATER)["water_heater"])
     assert thermostat.min_temp == 32
     assert thermostat.max_temp == 65
@@ -272,12 +280,13 @@ async def test_control_entities_readback_unknowns_and_commands() -> None:  # ruf
     assert reset.available
     await reset.async_press()
     coord.write.assert_awaited_with("control_new_filter_reset", "press")
-    coord.data = {"controls": {"power": "off", "sleep": "off"}}
+    coord.data = {"controls": {"power": "off", "antifreeze": "off"}}
     assert thermostat.hvac_mode == HVACMode.OFF
     assert toggle.is_on is False
     assert choice.current_option is None
     assert brightness.native_value is None
-    assert lock.is_locked is None
+    assert zero_water.current_option is None
+    assert air_hour.native_value is None
     coord.data = None
     assert thermostat.hvac_mode is None
     assert thermostat.native_current_temperature is None

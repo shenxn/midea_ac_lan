@@ -106,7 +106,7 @@ PIPE_VOLUMES = {
     "quantify_2": (150, 200, 250, 300, 400, 500),
     "quantify_3": (300, 400, 500, 600, 700),
 }
-SOFT_SWITCHES = {"soften", "cl_sterilization"}
+SOFT_SWITCHES = {"soften", "cl_sterilization", "regeneration"}
 VENTILATION_MODES = {1: "热交换", 7: "强劲", 8: "度假", 4: "自动"}
 SPEEDS = {0: "off", 40: "low", 60: "medium", 80: "high", 100: "full"}
 

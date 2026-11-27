@@ -22,7 +22,6 @@ NAMES = {
 
 
 HEATER_BINARY = {
-    "power": "电源状态",
     "burning": "燃烧反馈",
     "new_filter_problem": "全维恒净芯异常",
     "cruise_antifreeze": "巡航防冻",
@@ -42,7 +41,7 @@ class ApplianceBinary(ApplianceEntity, BinarySensorEntity):
 async def async_setup_entry(_hass: Any, entry: Any, async_add_entities: Any) -> None:
     """Create the model-specific Bluetooth entities."""
     profile = entry.runtime_data.profile
-    fields = {"power": "电源状态"} if profile == HOOD else HEATER_BINARY
+    fields = {} if profile == HOOD else HEATER_BINARY
     if profile == DISH:
         fields = NAMES
     if profile == PURIFIER:

@@ -34,7 +34,7 @@ async def async_setup_entry(_hass: Any, entry: Any, async_add_entities: Any) -> 
     profile = entry.runtime_data.profile
     fields = {"light": "照明"} if profile == HOOD else {"beep": "主机提示音"}
     if profile == DISH:
-        fields = {"beep": "提示音", "child_lock": "童锁"}
+        fields = {"beep": "提示音"}
     if profile == PURIFIER:
         fields = {}
     async_add_entities(

@@ -98,8 +98,12 @@ def test_soft_controls() -> None:
     assert frame[9] == 2
     assert frame[10:13] == bytes.fromhex("150101")
     assert d.get_attribute("f08_soften") is None  # no optimistic state
+    d.set_attribute("f08_regeneration", True)
+    regen_frame = d.build_send.call_args.args[0].serialize()
+    assert regen_frame[10:18] == bytes.fromhex("1501010509010000")
+    assert d.get_attribute("f08_regeneration") is None
     with pytest.raises(ValueError):
-        d.set_attribute("regeneration", True)
+        d.set_attribute("holiday_mode", True)
     with pytest.raises(ValueError):
         d.set_attribute("f08_soften", "off")
 
@@ -362,7 +366,7 @@ def test_pipe_rejects_unverified_commands(attribute: str, value: Any) -> None:
 
 @pytest.mark.parametrize(
     ("attribute", "value"),
-    [("regeneration", True), ("soften", "off"), ("water_hardness", True)],
+    [("holiday_mode", True), ("soften", "off"), ("water_hardness", True)],
 )
 def test_softener_rejects_unsafe_or_invalid_controls(
     attribute: str,

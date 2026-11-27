@@ -12,7 +12,7 @@ from .entity import ApplianceEntity
 
 SENSORS = {
     "status": ("运行状态", None),
-    "program": ("程序代码", None),
+    "program": ("洗涤程序", None),
     "stage": ("洗涤阶段代码", None),
     "temperature": ("温度", "°C"),
     "remaining": ("剩余时间", "min"),
@@ -35,6 +35,22 @@ HEATER_SENSORS: dict[str, tuple[str, str | None]] = {
     "error_code": ("故障代码", None),
 }
 STATUS = {0: "待机", 1: "取消", 2: "预约", 3: "洗涤中", 4: "故障", 6: "管路检查"}
+PROGRAMS = {
+    0: "无",
+    1: "智能洗",
+    2: "强力洗",
+    3: "标准洗",
+    4: "节能洗",
+    5: "玻璃洗",
+    6: "1小时洗",
+    7: "超快洗",
+    8: "预冲洗",
+    9: "90分钟洗",
+    10: "自清洁",
+    11: "果蔬洗",
+    13: "除菌洗",
+    19: "夜间洗",
+}
 
 
 class ApplianceSensor(ApplianceEntity, SensorEntity):
@@ -47,6 +63,8 @@ class ApplianceSensor(ApplianceEntity, SensorEntity):
             return None
         if self.key == "status":
             return STATUS.get(self.value, str(self.value))
+        if self.key == "program":
+            return PROGRAMS.get(self.value, str(self.value))
         return self.value
 
 
@@ -54,7 +72,7 @@ async def async_setup_entry(_hass: Any, entry: Any, async_add_entities: Any) -> 
     """Create the model-specific Bluetooth entities."""
     profile = entry.runtime_data.profile
     fields: dict[str, tuple[str, str | None]] = (
-        {"gear": ("风机档位", None)} if profile == HOOD else HEATER_SENSORS
+        {} if profile == HOOD else HEATER_SENSORS
     )
     if profile == DISH:
         fields = SENSORS

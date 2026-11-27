@@ -150,8 +150,8 @@ async def test_query_filters_frames_and_retries() -> None:
 async def test_control_queries_before_and_after_single_write() -> None:
     """Verify control queries before and after single write."""
     link = make_link(PURIFIER)
-    off = {"controls": {"sleep": "off"}}
-    on = {"controls": {"sleep": "on"}}
+    off = {"controls": {"antifreeze": "off"}}
+    on = {"controls": {"antifreeze": "on"}}
     link.query = AsyncMock(side_effect=[off, off, on])
     link.send = AsyncMock()
     link.session.request = Mock(return_value=b"command")
@@ -160,11 +160,11 @@ async def test_control_queries_before_and_after_single_write() -> None:
         "asyncio",
         SimpleNamespace(timeout=client.asyncio.timeout, sleep=AsyncMock()),
     ):
-        assert await link.set_option("control_sleep", "on") == on
+        assert await link.set_option("control_antifreeze", "on") == on
     link.send.assert_awaited_once()
     link.query = AsyncMock(return_value=on)
     link.send.reset_mock()
-    assert await link.set_option("control_sleep", "on") == on
+    assert await link.set_option("control_antifreeze", "on") == on
     link.send.assert_not_awaited()
     link.query = AsyncMock(return_value=off)
     with (
@@ -175,15 +175,7 @@ async def test_control_queries_before_and_after_single_write() -> None:
         ),
         pytest.raises(ValueError, match="did not confirm"),
     ):
-        await link.set_option("control_sleep", "on")
-    hood = make_link()
-    hood.query = AsyncMock(return_value={"controls": {}})
-    with pytest.raises(ValueError, match="Burner"):
-        await hood.set_option("control_left_stove_off", "press")
-    hood.query = AsyncMock(return_value={"controls": {"left_stove_off": "off"}})
-    assert await hood.set_option("control_left_stove_off", "press") == {
-        "controls": {"left_stove_off": "off"},
-    }
+        await link.set_option("control_antifreeze", "on")
     heater = make_link(HEATER)
     heater.send = AsyncMock()
     heater.session.request = Mock(return_value=b"command")

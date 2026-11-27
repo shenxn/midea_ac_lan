@@ -145,7 +145,6 @@ def test_partial_protection_reports_and_missing_data(device: Any) -> None:
         ("micro_leak_setting", 95),
         ("flushing_days", 31),
         ("water_hardness", 29),
-        ("regeneration", True),
         ("holiday_mode", True),
     ],
 )

@@ -47,7 +47,6 @@ def register_local_entities(devices: dict[int, Any]) -> None:
         "low_salt": "低盐报警",
         "no_salt": "缺盐报警",
         "rsj_stand_by": "待机",
-        "regeneration": "正在再生",
         "leak_water_protection": "漏水保护已启用",
         "micro_leak_protection": "微漏保护已启用",
         "salt_level_sensor_error": "盐位传感器故障",
@@ -72,7 +71,11 @@ def register_local_entities(devices: dict[int, Any]) -> None:
             "subtypes": [845],
             "required_attribute": "f08_" + key,
         }
-    for key, name in {"soften": "软化功能", "cl_sterilization": "氯杀菌"}.items():
+    for key, name in {
+        "soften": "软化功能",
+        "cl_sterilization": "氯杀菌",
+        "regeneration": "立即再生",
+    }.items():
         soft["f08_" + key] = {
             "type": Platform.SWITCH,
             "name": name,

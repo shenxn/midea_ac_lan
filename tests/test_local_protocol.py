@@ -164,7 +164,7 @@ def test_partial_ventilation_updates_preserve_other_measurements() -> None:
 @pytest.mark.parametrize(
     ("device_type", "subtype", "control"),
     [
-        (237, 845, {"regeneration": "on"}),
+        (237, 845, {"holiday_mode": "on"}),
         (237, 1046, {"out_water": "on"}),
         (237, 1046, {"heat_start": 1}),
         (237, 1046, {"custom_temperature_other3": 45}),

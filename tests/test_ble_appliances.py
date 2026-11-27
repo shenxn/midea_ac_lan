@@ -64,14 +64,23 @@ def test_purifier_status_and_single_setting() -> None:
     from custom_components.midea_ac_lan.ble.controls import command
     from custom_components.midea_ac_lan.ble.protocol import signed
 
-    body = bytes.fromhex("ff0103004008800003105063560000001340c4000a00071218")
+    body = bytes.fromhex("ff0103004008800003105063560000001340c4000a000712183c30410800")
     raw = b"\xaa" + signed(bytes([10 + len(body), 0xED, 0, 0, 0, 0, 0, 0, 3]) + body)
     state = parse(PURIFIER, raw)
     assert (state["in_tds"], state["out_tds"], state["inlet"]) == (196, 10, 24)
     assert (state["ro_life"], state["pcb_life"]) == (99, 86)
-    assert state["controls"]["power"] == "on"
-    assert "antifreeze" not in state["controls"]
-    assert command(PURIFIER, "sleep", "off", {})[10:-1].hex() == "1501010401000000"
+    assert state["controls"]["antifreeze"] == "on"
+    assert state["controls"]["zero_water_mode"] == "标准模式"
+    assert "power" not in state["controls"]
+    assert command(PURIFIER, "wash", "on", {})[10:-1].hex() == "1501010003010000"
+    assert (
+        command(PURIFIER, "zero_water_mode", "关闭", {})[10:-1].hex()
+        == "1501010f02000000"
+    )
+    assert (
+        command(PURIFIER, "zero_water_mode", "极致模式", {})[10:-1].hex()
+        == "1501030f0201000013020100000b02000000"
+    )
     with pytest.raises(ValueError):
         parse(PURIFIER, raw[:-1])
 

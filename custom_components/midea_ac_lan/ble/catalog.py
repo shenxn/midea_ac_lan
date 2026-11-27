@@ -104,21 +104,6 @@ CATALOG: dict[str, dict[str, Any]] = {
             "name": "烟感",
             "commands": {"off": "1101020400ff", "on": "1101020401ff"},
         },
-        "left_stove_off": {
-            "platform": "button",
-            "name": "关闭左炉头",
-            "commands": {"press": "11020101ffffffffff"},
-        },
-        "right_stove_off": {
-            "platform": "button",
-            "name": "关闭右炉头",
-            "commands": {"press": "11020201ffffffffff"},
-        },
-        "middle_stove_off": {
-            "platform": "button",
-            "name": "关闭中炉头",
-            "commands": {"press": "11020301ffffffffff"},
-        },
         "lightness": {
             "platform": "number",
             "name": "照明亮度",
@@ -237,8 +222,12 @@ CATALOG: dict[str, dict[str, Any]] = {
             },
         },
         "air_set_hour": {
-            "platform": "select",
+            "platform": "number",
             "name": "鲜存设定时长",
+            "min": 0,
+            "max": 72,
+            "step": 1,
+            "unit": "h",
             "commands": {
                 "0": "86",
                 "1": "8601",

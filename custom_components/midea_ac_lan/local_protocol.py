@@ -275,7 +275,11 @@ class ModelCodec:
             raise ValueError("Exactly one ED setting is required")
         name, value = next(iter(control.items()))
         switches = (
-            {"soften": 0x0906, "cl_sterilization": 0x090C}
+            {
+                "soften": 0x0906,
+                "cl_sterilization": 0x090C,
+                "regeneration": 0x0905,
+            }
             if self.subtype == 845
             else {"power": 0x0100, "lock": 0x0201, "human_sensing_switch": 0x0118}
         )
